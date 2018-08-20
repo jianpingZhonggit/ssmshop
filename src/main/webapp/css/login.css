@@ -1,0 +1,128 @@
+@charset "utf-8";
+/* CSS Document */
+body{font-family:'微软雅黑'}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.all{
+	width:100%;
+	height:auto;
+}
+.all .allheader{
+	height:50px;
+	padding-left: 208px;
+    padding-top: 28px;
+}
+
+.dlbg {
+    width: 320px;
+    margin: 50px auto 0 auto;
+}
+.dlbg .dls{
+	font-size:22px;
+	color:#284372;
+	margin:20px;
+	padding-top:20px;
+}
+
+
+.txtfield {
+    border: 1px solid #ccc;
+    color: #999;
+    font-size: 14px;
+    height: 30px;
+    line-height: 24px;
+    padding: 3px;
+    width: 270px;
+    float: left;
+    margin-bottom: 10px;
+}
+.text {
+    border: 1px solid #ccc;
+    color: #999;
+    font-size: 14px;
+    height: 24px;
+    left: 67px;
+    line-height: 24px;
+    padding: 3px;
+    position: absolute;
+}
+
+.submit, .goback {
+    background: none repeat scroll 0 0 #535353;
+    border: 0 none;
+    color: #fff;
+    cursor: pointer;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    height: 35px;
+    vertical-align: middle;
+    width: 316px;
+    float: left;
+}
+.goback {
+    margin-left: 20px;
+    background: #e8e8e8;
+    color: #525252;
+    line-height: 35px;
+}
+.footer{
+	height:60px;
+	text-align:center;
+}
+.footer a{
+	color:#fff;
+	font-size:16px;
+	line-height:60px;
+}
+.top-banner {
+    background: #535353;
+    height: 360px;
+    width: 100%;
+}
+.icon {
+    width: 38px;
+    height: 38px;
+    float: left;
+    background: #535353;
+}
+.icon img {
+    margin-top: 5px;
+}
+.verify_img {
+    float: left;
+    margin-left: 10px;
+    width: 75px;
+    height: 36px;
+}
+.change {
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+}
+.change a {
+    color: #525252;
+}
+.change-img {
+    margin-left: 10px;
+    cursor: pointer;
+    position: relative;
+    top: 9px;
+}
+.all-btn {
+    width: 320px;
+    margin-top: 5px;
+}
+.input-label{
+    margin-bottom: 6px;
+}
+.input-label:after {
+    content: "";
+    height: 0;
+    display: block;
+    clear: both;
+}

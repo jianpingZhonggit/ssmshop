@@ -1,0 +1,94 @@
+.numdiv{margin:0px auto;height:auto;width:90px;}
+.numrolld_u{display:block;width:18px;height:18px;float:left;border:#cacbcb 1px solid;border-left: 0; background:#FFF;text-align:center; color:666;}
+.numrolld_d{display:block;width:18px;height:18px;float:left;border:#cacbcb 1px solid;border-right: 0; background:#FFF;text-align:center; color:666;}
+.numinput{width:36px;height:16px;float:left;border:#cacbcb 1px solid;background:#FFFFFF;text-align:center}
+.numinput_a{width:36px;height:16px;float:left;border:#FF0000 1px solid;background:#FFFF00;text-align:center}
+
+.yqinput{width:200px;height:17px;border:#cacbcb 1px solid;line-height:17px;background:#FFFFFF;}
+.yqinpute{width:200px;height:17px;border:#00CC00 1px solid;line-height:17px;background:#FFFFFF;}
+.yqinputu{width:200px;height:17px;border:#FF0000 1px solid;line-height:17px;background:#FFFF00;}
+
+.btn_cartclear {
+    color: #fff;
+    width: 120px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    background: #999;
+    font-weight: bold;
+	display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;margin-left:15px; float:left;
+	}
+.btn_cartclear:hover{background: #888;}
+
+.btn_carttobuy{
+    color: #fff;
+    width: 120px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    background: #444;
+    font-weight: bold;
+	display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;margin-right: 15px;float:right;
+	}
+.btn_carttobuy:hover{background: #000;}
+
+.btn_carttosubmit,.btn_cartsubmit{
+	color: #fff;
+    width: 160px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    background: #ff4444;
+    font-weight: bold;
+	display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;margin-right: 15px;float:right;
+	}
+.btn_carttosubmit:hover,.btn_cartsubmit:hover{background: #DD4444;}
+
+.btn_pay{
+	color: #fff;
+    width: 160px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    background:green;
+    font-weight: bold;
+	display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;margin-right: 15px;float:left;
+	}
+.btn_pay:hover{background:#046A03;}
+
+.btn_olpay{
+	color: #fff;
+    width: 260px;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    text-align: center;
+    background: #ff4444;
+    font-weight: bold;
+	display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;margin-right: 15px;float:left;
+	}
+.btn_olpay:hover{background: #DD4444;}
+
+
+
+
+

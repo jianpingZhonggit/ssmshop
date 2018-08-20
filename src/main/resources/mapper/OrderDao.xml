@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置OrderDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.OrderDao">
+    <insert id="insertOrder" parameterType="org.heida.model.Order">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="oid">
+                SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into orders
+        values(default,#{total},#{ordertime},#{state},#{name},#{phone},#{addr},#{uid})
+    </insert>
+    <resultMap id="OrderListMap" type="org.heida.model.OrderExt">
+        <id column="oid" property="oid"/>
+        <result property="total" column="total"/>
+        <result property="ordertime" column="ordertime"/>
+        <result property="state" column="state"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="addr" column="addr"/>
+        <result property="uid" column="uid"/>
+        <collection property="orderItemExts" ofType="org.heida.model.OrderItemExt">
+            <id property="itemid" column="itemid"/>
+            <result property="count" column="count"/>
+            <result property="subtotal" column="subtotal"/>
+            <association property="product" javaType="org.heida.model.Product">
+                <id property="pid" column="pid"/>
+                <result property="pname" column="pname"/>
+                <result property="market_price" column="market_price"/>
+                <result property="shop_price" column="shop_price"/>
+                <result property="image" column="image"/>
+                <result property="pdesc" column="pdesc"/>
+                <result property="is_hot" column="is_hot"/>
+                <result property="pdate" column="pdate"/>
+                <result property="csid" column="csid"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="getOrderList" parameterType="org.heida.model.Order" resultMap="OrderListMap">
+        SELECT orders.*,itemid,count,subtotal,product.*
+        FROM orders
+        LEFT JOIN orderitem
+        ON orders.oid=orderitem.oid
+        LEFT JOIN product
+        ON orderitem.pid=product.pid
+        where uid=#{uid}
+        <if test="state!=null">
+            and state=#{state}
+        </if>
+        order by ordertime desc
+    </select>
+    <select id="getRowCount" parameterType="org.heida.model.PageBeanExt" resultType="Integer">
+        SELECT count(*)
+        FROM orders LEFT JOIN `user`
+        ON orders.uid=`user`.uid
+        <where>
+            <if test="keywords!=null and keywords!=''">
+                user.username like "%${keywords}%"
+            </if>
+            <if test="state!=null">
+                and orders.state=#{state}
+            </if>
+            <if test="startTime!='' and startTime!=null">
+                and ordertime>#{startTime}
+            </if>
+            <if test="endTime!='' and endTime!=null">
+                and #{endTime} > ordertime
+            </if>
+        </where>
+    </select>
+    <resultMap id="getAllOrder" type="org.heida.model.OrderExt">
+        <id property="oid" column="oid"/>
+        <result property="total" column="total"/>
+        <result property="ordertime" column="ordertime"/>
+        <result property="state" column="state"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="addr" column="addr"/>
+        <association property="user" javaType="org.heida.model.User">
+            <id property="uid" column="uid"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+        </association>
+    </resultMap>
+    <select id="getAllOrder" resultMap="getAllOrder" parameterType="org.heida.model.PageBeanExt">
+      SELECT orders.*,username,password
+      FROM orders LEFT JOIN `user`
+      ON orders.uid=`user`.uid
+      <where>
+            <if test="keywords!=null and keywords!=''">
+                user.username like "%${keywords}%"
+            </if>
+            <if test="state!=null">
+                and orders.state=#{state}
+            </if>
+            <if test="startTime!='' and startTime!=null">
+                and ordertime>#{startTime}
+            </if>
+            <if test="endTime!='' and endTime!=null">
+                and #{endTime} > ordertime
+            </if>
+      </where>
+      ORDER BY ordertime desc
+      limit #{startLimit},#{pageSize}
+    </select>
+    <select id="getOrderCountByUid" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from orders
+        where uid=#{uid}
+    </select>
+    <update id="delOrderByOid" parameterType="Integer">
+        delete from orders
+        where oid=#{oid}
+    </update>
+    <resultMap extends="OrderListMap" id="orderExtMap" type="org.heida.model.OrderExt">
+        <association property="user" javaType="org.heida.model.User">
+            <id property="uid" column="uid"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+        </association>
+    </resultMap>
+    <select id="getOrderExtByOid" parameterType="Integer" resultMap="orderExtMap">
+        SELECT orders.*,user.username,itemid,count,subtotal,product.*
+        FROM orders
+        LEFT JOIN `user`
+        ON orders.uid=`user`.uid
+        LEFT JOIN orderitem
+        ON orders.oid=orderitem.oid
+        LEFT JOIN product
+        ON orderitem.pid=product.pid
+        WHERE orders.oid=#{oid};
+    </select>
+    <select id="updateOrder">
+        update orders
+        set state=#{state}
+        where oid=#{oid}
+    </select>
+</mapper>

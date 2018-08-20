@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置ProductDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.ProductDao">
+    <select id="getProductListByPage" parameterType="org.heida.model.PageBean" resultType="org.heida.model.Product">
+        SELECT pid,pname,market_price,shop_price,image,pdesc,is_hot,pdate,product.csid
+        FROM product
+        LEFT JOIN categorysecond
+        on product.csid=categorysecond.csid
+        <where>
+            <if test="cid!=null">
+                cid = #{cid}
+            </if>
+            <if test="csid!=null">
+                and product.csid=#{csid}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                and pname like "%${keywords}%"
+            </if>
+        </where>
+        order by pdate desc
+        limit #{startLimit},#{pageSize}
+    </select>
+    <select id="getProductByPid" parameterType="Integer" resultType="org.heida.model.Product">
+        select *
+        from product
+        where pid=#{pid}
+    </select>
+    <select id="getHotProduct" resultType="org.heida.model.Product">
+        select *
+        from product
+        where is_hot=1
+    </select>
+    <select id="getNewProduct" resultType="org.heida.model.Product">
+        select *
+        from product
+        order by pdate
+        limit 15
+    </select>
+    <select id="getRowCountByPage" parameterType="org.heida.model.PageBean" resultType="Integer">
+        SELECT count(*)
+        FROM product
+        LEFT JOIN categorysecond
+        on product.csid=categorysecond.csid
+        <where>
+            <if test="cid!=null">
+                cid = #{cid}
+            </if>
+            <if test="csid!=null">
+                and product.csid=#{csid}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                and pname like "%${keywords}%"
+            </if>
+        </where>
+    </select>
+
+    <update id="delProductById" parameterType="Integer">
+        delete from product
+        where pid=#{pid}
+    </update>
+
+    <select id="getProductCountByCsid" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from product
+        where csid=#{csid}
+    </select>
+    <update id="updateProductByPid" parameterType="org.heida.model.Product">
+        update product
+        set pname=#{pname}
+        and shop_price=#{shop_price}
+        and is_off=#{is_off}
+        where pid=#{pid}
+    </update>
+    <insert id="addProduct" parameterType="org.heida.model.Product">
+        insert into product
+        values (default ,#{pname},#{market_price},#{shop_price},#{image},#{pdesc},#{is_hot},#{pdate},#{csid},#{is_off})
+    </insert>
+</mapper>

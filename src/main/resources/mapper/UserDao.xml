@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置UserDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.UserDao">
+    <select id="checkLoginUser" parameterType="User" resultType="User">
+        select *
+        from user
+        where username=#{username}
+        and password=#{password}
+    </select>
+    <select id="checkRegisterUser" resultType="org.heida.model.User" parameterType="org.heida.model.User">
+        select *
+        from user
+        where username=#{username}
+    </select>
+    <update id="addUser" parameterType="User">
+        insert into user(username, password, name, email, phone, address, code)
+        values (#{username},#{password},#{name},#{email},#{phone},#{address},#{code})
+    </update>
+    <select id="getRowCount" parameterType="org.heida.model.PageBean" resultType="Integer">
+        select count(*)
+        from user
+        <if test="keywords!=null and keywords!=''">
+            where username like "%${keywords}%"
+        </if>
+    </select>
+
+    <select id="getUserList" resultType="org.heida.model.User" parameterType="org.heida.model.PageBean">
+        select *
+        from user
+        <if test="keywords!=null and keywords!=''">
+            where username like "%${keywords}%"
+        </if>
+        limit #{startLimit},#{pageSize}
+    </select>
+    <update id="delUserById" parameterType="Integer">
+        delete from user
+        where uid=#{uid}
+    </update>
+    <select id="getUserByUid" parameterType="Integer" resultType="org.heida.model.User">
+        select *
+        from user
+        where uid=#{uid}
+    </select>
+    <update id="updateUser" parameterType="org.heida.model.User">
+        update user
+        set username=#{username}
+        and password=#{password}
+        and state=#{state}
+        and phone=#{phone}
+        where uid=#{uid}
+    </update>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置CategoryDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.CategoryDao">
+    <select id="getCategoryList" resultType="org.heida.model.Category">
+        select *
+        from category
+    </select>
+    <resultMap id="getCategoryExtListMap" type="org.heida.model.CategoryExt">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname"/>
+        <collection property="categorySecondList" ofType="org.heida.model.CategorySecond">
+            <id property="csid" column="csid"/>
+            <result property="csname" column="csname"/>
+        </collection>
+    </resultMap>
+    <select id="getCategoryExtList" resultMap="getCategoryExtListMap" parameterType="org.heida.model.PageBean">
+        SELECT category.*,csid,csname
+        FROM category LEFT JOIN categorysecond
+        ON category.cid=categorysecond.cid
+        <if test="keywords!=null and keywords!=''">
+            where cname like '%${keywords}%'
+        </if>
+    </select>
+
+    <select id="getRowCount" parameterType="org.heida.model.PageBean" resultType="Integer">
+        select count(*)
+        from category
+        <if test="keywords!=null and keywords!=''">
+            where cname like "%${keywords}%"
+        </if>
+    </select>
+    <update id="delCategoryByCid" parameterType="Integer">
+        delete from category
+        where cid=#{cid}
+    </update>
+</mapper>

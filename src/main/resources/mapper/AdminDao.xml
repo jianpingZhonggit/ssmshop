@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置AdminUserDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.AdminUserDao">
+    <select id="getAdminUser" parameterType="org.heida.model.AdminUser" resultType="org.heida.model.AdminUser">
+      select *
+      from adminuser
+      where username=#{username}
+      and password=#{password}
+    </select>
+</mapper>

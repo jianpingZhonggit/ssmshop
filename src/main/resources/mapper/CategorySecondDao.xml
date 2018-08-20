@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--设置CategorySecondDao接口方法提供sql语句配置-->
+<mapper namespace="org.heida.dao.CategorySecondDao">
+    <select id="getCategorySecondListByCid" resultType="org.heida.model.CategorySecond" parameterType="Integer">
+      select *
+      from categorysecond
+      where cid=#{cid}
+    </select>
+    <select id="getRowCount" resultType="Integer" parameterType="org.heida.model.PageBean">
+        select count(*)
+        from categorysecond
+        <if test="keywords!=null and keywords!=''">
+            where csname like "%${keywords}%"
+        </if>
+    </select>
+    <resultMap id="categorySecondMap" type="org.heida.model.CategorySecondExt">
+        <id property="csid" column="csid"/>
+        <result property="csname" column="csname"/>
+        <association property="category" javaType="org.heida.model.Category">
+            <id property="cid" column="cid"/>
+            <result property="cname" column="cname"/>
+        </association>
+    </resultMap>
+    <select id="getCategorySecondExtList" parameterType="org.heida.model.PageBean" resultMap="categorySecondMap">
+      SELECT categorysecond.*,cname
+      FROM categorysecond LEFT JOIN category
+      on categorysecond.cid=category.cid
+      <if test="keywords!=null and keywords!=''">
+          where csname like "%${keywords}%"
+      </if>
+      limit #{startLimit},#{pageSize}
+    </select>
+    <select id="getCategorySecondCountByCid" parameterType="Integer" resultType="Integer">
+        select count(*)
+        from categorysecond
+        where cid=#{cid}
+    </select>
+    <update id="delCategorySecondByCsid" parameterType="Integer">
+        delete from categorysecond
+        where csid=#{csid}
+    </update>
+</mapper>
