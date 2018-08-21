@@ -8,8 +8,9 @@
         LEFT JOIN categorysecond
         on product.csid=categorysecond.csid
         <where>
+            is_off = 1
             <if test="cid!=null">
-                cid = #{cid}
+                and cid = #{cid}
             </if>
             <if test="csid!=null">
                 and product.csid=#{csid}
@@ -30,10 +31,12 @@
         select *
         from product
         where is_hot=1
+        and is_off=1
     </select>
     <select id="getNewProduct" resultType="org.heida.model.Product">
         select *
         from product
+        where is_off=1
         order by pdate
         limit 15
     </select>
@@ -43,8 +46,9 @@
         LEFT JOIN categorysecond
         on product.csid=categorysecond.csid
         <where>
+            is_off=1
             <if test="cid!=null">
-                cid = #{cid}
+                and cid = #{cid}
             </if>
             <if test="csid!=null">
                 and product.csid=#{csid}
@@ -64,12 +68,11 @@
         select count(*)
         from product
         where csid=#{csid}
+        and is_off=1
     </select>
     <update id="updateProductByPid" parameterType="org.heida.model.Product">
         update product
-        set pname=#{pname}
-        and shop_price=#{shop_price}
-        and is_off=#{is_off}
+        set pname=#{pname},shop_price=#{shop_price},is_off=#{is_off}
         where pid=#{pid}
     </update>
     <insert id="addProduct" parameterType="org.heida.model.Product">

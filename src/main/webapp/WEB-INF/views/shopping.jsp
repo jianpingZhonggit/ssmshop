@@ -33,6 +33,7 @@
     <script type="text/javascript" src="${path}/js/common.js"></script>
     <script type="text/javascript" src="${path}/js/action.js"></script>
     <script type="text/javascript" src="${path}/js/check.js"></script>
+    <script type="text/javascript" src="${path}/js/util.js"></script>
 </head>
 <body>
 
@@ -96,80 +97,10 @@
         </li>
     </c:forEach>
 </ul>
-<!--<script type="text/javascript">
-    var tempso="请输入商品名称或条码进行搜索";
-    $(function(){
-        //导航更多按钮
-        $("#more").hover(function(){$(this).children("dl").show()},function(){$(this).children("dl").hide()});
-        //商品目录交互
-        $("#tags li").hover(function(){$(this).addClass("current").children("dl").show()},function(){$(this).removeClass("current").children("dl").hide()});
-        //搜索框的交互
-        $("#so_txt").val(tempso).focus(function(){if($(this).val() == tempso){$(this).val("");}}).blur(function(){if ($(this).val() == ""){$(this).val(tempso)}});
-        //搜索提示
-        $("#so_txt1").autocomplete('/psearch_tips.html', {
-            minChars: 1,
-            matchContains: true,
-            autoFill: false,
-            max: 10,
-            matchCase: false,
-            scroll: false,
-            width: 278,
-            resultUrl: 'psearch.html?keywords=',
-            formatItem: function(row, i, max) {
-                return row[1];
-            },
-            formatResult: function(row) {
-                return row[1];
-            }
-        });
-        $("input.submit").hover(function(){$(this).toggleClass("hover")});
 
-        var $item = $(".navitem"),$menu = $(".dropdown"),onshopnav = false,onshopmenu = false,attemptinghide = false;
-        var attempthide = function(ele) {
-            if (!attemptinghide) {
-                attemptinghide = true;
-                setTimeout(function() {
-                    attemptinghide = false;
-                    if (!onshopnav &&!onshopmenu) {
-                        dohide(ele);
-                    }
-                }, 250);
-            }
-        };
-        var dohide = function(ele) {
-            $(ele).siblings(".dropdown").hide();
-            $(ele).removeClass('active');
-        };
-        $(".navitem").live('mouseover mouseleave', function(event) {
-            if (event.type=='mouseover'){
-                onshopnav = true;
-                var $ele = $(this).parent().siblings().children(".navitem");
-                $(this).addClass("active");
-                $(this).siblings(".dropdown").slideDown("fast");
-                dohide($ele);
-            } else {
-                onshopnav = false;
-                if (onshopnav || onshopmenu) {
-                    dohide($(this));
-                }else{
-                    attempthide($(this));
-                }
-            }
-        });
-        $(".dropdown").live('mouseover mouseleave', function(event) {
-            if (event.type=='mouseover'){
-                onshopmenu = true;
-            } else {
-                onshopmenu = false;
-                attempthide($(this).siblings(".navitem"));
-            }
-        });
-    }
-</script>-->
-
+<form action="${path}/order/pay.do" method="post" onsubmit=" return check(this)">
 <div class="main user">
     <div class="bodycenter" style="background-color:#fff">
-        <form action="/action/user_cart_submit.0.html" method="post">
             <div style="
                         margin-bottom:10px;
                         height:26px;
@@ -187,7 +118,10 @@
                         <div align="right">收货人姓名:</div>
                     </td>
                     <td width="90%" bgcolor="#FFFFFF">
-                        <input type="text" class="textbox" value="${sessionScope.user.username}" size="15" maxlength="10">
+                        <input type="text"
+                               name="name"
+                               class="textbox"
+                               value="${sessionScope.user.username}" size="15" maxlength="10">
                     </td>
                 </tr>
                 <tr>
@@ -195,7 +129,8 @@
                         <div align="right">收货地址：</div>
                     </td>
                     <td bgcolor="#FFFFFF">
-                        <input name="userdz" type="text" class="textbox"
+                        <input type="text" class="textbox"
+                               name="addr"
                                id="userdz" value="${sessionScope.user.address}" size="30" maxlength="100">
                         <span class="red">*</span>
                         <span class="s999999">用于收货</span>
@@ -206,7 +141,10 @@
                         <div align="right">邮政编码：</div>
                     </td>
                     <td bgcolor="#FFFFFF">
-                        <input name="useryb" type="text" class="textbox" id="useryb" value="${sessionScope.user.code}" size="10" maxlength="10" style="IME-MODE:disabled">
+                        <input type="text"
+                               class="textbox" id="useryb"
+                               name="code"
+                               value="${sessionScope.user.code}" size="10" maxlength="10" style="IME-MODE:disabled">
                         <span class="red">*</span>
                         <span class="s999999">用于收货</span>
                     </td>
@@ -215,8 +153,9 @@
                     <td height="30" bgcolor="#FFFFFF">
                         <div align="right">电话号码:</div></td>
                     <td bgcolor="#FFFFFF">
-                        <input name="userdh" type="text"
-                               class="textbox" id="userdh" value="${sessionScope.user.phone}"
+                        <input type="text"
+                               class="textbox" id="userdh"
+                               name="phone" value="${sessionScope.user.phone}"
                                size="20" maxlength="30" style="IME-MODE:disabled">
                     </td>
                 </tr>
@@ -303,7 +242,6 @@
                     <td><span id="hjyf" style="font-size:20px;font-weight:bold;color:#F30;">${total}</span>&nbsp;元</td>
                 </tr>
             </table>
-        </form>
         <script language="javascript">
             var kx_ddje=3371.28;
             var kx_sjyf=0;
@@ -336,13 +274,34 @@
             <tr>
                 <td width="100%" height="60">
                     <!--<a href="user_cart.html" class="btn_cartclear" style="float:left;">返回购物车</a>-->
+                    <input type="text" value="${oid}" name="oid" hidden="hidden"/>
+                    <input style="
+                              display: block;
+                              width: 120px;
+                              height: 50px;
+                              color: #fff;
+                              background: red;
+                              font-size: 22px;
+                              letter-spacing: 5px;
+                              text-decoration: none;
+                              line-height: 50px;
+                              text-align: center;
+                              border-radius: 2px;
+                              border:none;
+                              " type="submit" value="付款"/>
+                    <!--
+                    <a href="${path}/order/pay.do?oid=${oid}" class="btn_cartsubmit">付款</a>
+                    -->
+                    <!--
                     <a href="javascript:;" onClick="OrderSubmit()" class="btn_cartsubmit">付款</a>
+                    -->
                     <!--<a href="javascript:;" onclick="location.href=getcarbackurl()" class="btn_carttobuy">继续选购商品</a>-->
                 </td>
             </tr>
         </table>
     </div>
 </div>
+</form>
 
 <!--div class="goTop_box">
   <div class="kfBut">

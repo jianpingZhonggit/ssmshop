@@ -142,4 +142,9 @@ public class Test {
 //    public void hello(){
 //        productDao.test();
 //    }
+     @RequestMapping("/read")
+     public void read(String username,String content){
+         System.out.println(username);
+         System.out.println(content);
+     }
 }

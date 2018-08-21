@@ -134,4 +134,10 @@
         set state=#{state}
         where oid=#{oid}
     </select>
+
+    <update id="changeOrder" parameterType="org.heida.model.Order">
+      update orders
+      set state=1,name=#{name},addr = #{addr},phone = #{phone},ordertime=#{ordertime}
+      where oid=#{oid}
+    </update>
 </mapper>

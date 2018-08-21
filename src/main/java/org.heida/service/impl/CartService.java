@@ -34,4 +34,5 @@ public interface CartService {
     Integer dealShop(List<CartItem> shop,Integer uid);
 
     Double getTotal(List<CartItem> shop);
+
 }

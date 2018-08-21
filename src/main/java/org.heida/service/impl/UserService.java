@@ -33,4 +33,6 @@ public interface UserService {
     User getUserByUid(Integer uid);
 
     void updateUser(User user);
+
+    boolean check(User user);
 }

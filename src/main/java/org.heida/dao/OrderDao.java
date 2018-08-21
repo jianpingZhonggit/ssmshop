@@ -21,4 +21,8 @@ public interface OrderDao {
     OrderExt getOrderExtByOid(Integer oid);
 
     void updateOrder(Order order);
+
+
+    void changeOrder(Order order);
+
 }

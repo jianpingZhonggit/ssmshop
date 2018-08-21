@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Controller
 @RequestMapping("/user")
@@ -163,6 +164,28 @@ public class UserController {
             return "redirect:/user/userList"
                     +"?pageNow="+pageBean.getPageNow()
                     +"&keywords="+pageBean.getKeywords();
+        }
+    }
+
+    @RequestMapping("/checkUserByAjax")
+    public void checkUserByAjax(String username, HttpServletResponse response){
+        try {
+            PrintWriter writer = response.getWriter();
+            //检查用户名是否为空以及是否已存在
+            if("".equals(username)){//用户名为空
+                writer.print("username empty");
+            }else{
+                User temp = new User();
+                temp.setUsername(username);
+                if(userService.check(temp)){//用户名不存在
+                    writer.print("ok");
+                }else{//用户名已存在
+                    writer.print("username exist");
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

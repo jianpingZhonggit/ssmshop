@@ -44,10 +44,7 @@
     </select>
     <update id="updateUser" parameterType="org.heida.model.User">
         update user
-        set username=#{username}
-        and password=#{password}
-        and state=#{state}
-        and phone=#{phone}
+        set username=#{username},password=#{password},state=#{state},phone=#{phone}
         where uid=#{uid}
     </update>
 </mapper>

@@ -89,4 +89,13 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) {
         userDao.updateUser(user);
     }
+
+    @Override
+    public boolean check(User user){
+        if(userDao.checkRegisterUser(user)==null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

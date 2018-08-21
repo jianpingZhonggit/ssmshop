@@ -140,9 +140,8 @@
 
                         <c:forEach var="order" items="${orderList}">
                             <c:if test="${order.orderItemExts.size()>0}">
-
-
-                        <div class="tab-item">
+                            <form action="${path}/order/dealOrder.do">
+                                <div class="tab-item">
                             <a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
                                 <div class="aui-well-item-hd">
                                     <img src="images/icon-logo.png" alt="">
@@ -168,6 +167,8 @@
                                         <img src="${path}/images/${orderitem.product.image}" alt="">
                                     </div>
                                     <div class="aui-mail-product-item-bd">
+                                        <input type="text" name="pid" value="${orderitem.product.pid}" hidden="hidden"/>
+                                        <input type="text" name="count" value="${orderitem.count}" hidden="hidden"/>
                                         <p style="color: #0C0C0C;font-size: 24px;">
                                             ${orderitem.product.pname}&nbsp;&nbsp;&nbsp;&nbsp;
                                             ${orderitem.product.shop_price}&nbsp;X&nbsp;${orderitem.count}
@@ -186,7 +187,18 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a href="javascript:;">再次购买</a>
+                                    <input type="submit" value="再次购买"
+                                           style="
+                                            background: none;
+                                            border: 1px solid #f0250f;
+                                            color: #f0250f;
+                                            font-size: 18px;
+                                            border-radius: 40px;
+                                            display: block;
+                                            padding: 2px 14px;
+                                            display: inline-block;
+                                            float: right;
+                                            margin-left: 8px;"/>
                                 </div>
                             </c:if>
                             <c:if test="${order.state==2}">
@@ -197,10 +209,23 @@
                                     </p>
                                 </a>
                                 <div class="aui-mail-button">
-                                    <a href="javascript:;">付款</a>
+                                    <input type="text" name="oid" value="${order.oid}" hidden="hidden"/>
+                                    <input type="submit" value="付款"
+                                           style="
+                                            background: none;
+                                            border: 1px solid #f0250f;
+                                            color: #f0250f;
+                                            font-size: 18px;
+                                            border-radius: 40px;
+                                            display: block;
+                                            padding: 2px 14px;
+                                            display: inline-block;
+                                            float: right;
+                                            margin-left: 8px;"/>
                                 </div>
                             </c:if>
-                        </div>
+                            </div>
+                            </form>
                             </c:if>
                         </c:forEach>
 

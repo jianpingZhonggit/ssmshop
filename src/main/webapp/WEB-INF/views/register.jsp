@@ -63,6 +63,57 @@
             });
         });
     </script>
+    <script>
+        function checkRegisterUser() {
+            var username = $("[name='username']")
+            var password = $("[name='password']")
+            var pwd = $("[name='pwd']")
+            var name = $("[name='name']")
+            var email= $("[name='email']")
+            var phone = $("[name='phone']")
+            var address = $("[name='address']")
+            var code = $("[name='code']")
+            if(username.val()==''){
+                return false;
+            }
+            if(password.val()==''){
+                alert('密码不能为空!')
+                password.focus()
+                return false;
+            }
+            if(pwd.val()==''){
+                alert('确认密码不能为空!')
+                pwd.focus()
+                return false;
+            }
+            if(password.val()!=''&&pwd.val()!=''&&pwd.val()!=password.val()){
+                alert('两次密码不一致!')
+                password.focus()
+                return false;
+            }
+            if(name.val()==''){
+                alert('真实姓名不能为空!')
+                name.focus()
+                return false;
+            }
+            if(email.val()==''){
+                alert('邮箱不能为空!')
+                email.focus()
+                return false;
+            }
+            if(phone.val()==''){
+                alert('电话不能为空!')
+                phone.focus()
+                return false;
+            }
+            if(code.val()==''){
+                alert('编号不能为空!')
+                code.focus()
+                return false;
+            }
+            return false;
+        }
+    </script>
     <title>注册页面</title>
 </head>
 <body>
@@ -91,7 +142,7 @@
             <img src="${path}/images/l_img.png" width="611" height="425" /></div>
         <div class="reg_c">
             <form action = "${pageContext.request.contextPath}/user/registerUser.do"
-                  onsubmit="return checkRegisterUser(this)" method="post">
+                  onsubmit="return checkRegisterUser()" method="post">
                 <table border="0" style="width:420px; font-size:14px; margin-top:20px;" cellspacing="0" cellpadding="0">
                     <tr height="48" valign="top">
                         <td width="95">&nbsp;</td>
@@ -123,8 +174,10 @@
                     <tr height="48">
                         <c:if test="${register==null}">
                             <td align="right"><font color="#ff4e00">*</font>&nbsp;密码 &nbsp;</td>
-                            <td><input type="password" value="" class="l_pwd" name ="password" id="password"/>
-                                <span name="cpassword"></span></td>
+                            <td>
+                                <input type="password" value="" class="l_pwd" name ="password" id="password"/>
+                                <span name="cpassword"></span>
+                            </td>
                         </c:if>
                         <c:if test="${register!=null}">
                             <c:if test="${registerUser.password==''}">
@@ -230,7 +283,24 @@
                     </tr>
                     <tr height="58">
                         <td>&nbsp;</td>
-                        <td><input type="submit" value="立即注册" class="log_btn" /></td>
+                        <td><input type="submit"
+                                   value="立即注册"
+                                   style="
+                                          width:318px;
+                                          height:42px;
+                                          line-height:42px\9;
+                                          overflow:hidden;
+                                          color:#FFF;
+                                          font-size:16px;
+                                          background-color:red;
+                                          text-align:center;
+                                          padding:0;
+                                          border:0;
+                                          cursor:pointer;
+                                           -webkit-border-radius:2px;
+                                           -moz-border-radius:2px;
+                                           border-radius:2px;" />
+                        </td>
                     </tr>
 
                 </table>

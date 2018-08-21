@@ -68,11 +68,11 @@
 
     <dl class="funcs">
         <dt>
-            <form id="searchForm" name="searchForm" method="get" action="${path}/productList.do" onsubmit="return checkSearchFormAction();">
-                <c:if test="${pageBean.keywords==null||keywords==''}">
+            <form id="searchForm" name="searchForm" method="get" action="${path}/productList.do" ">
+                <c:if test="${pageBean.keywords==null||pageBean.keywords==''}">
                     <input class="text" name="keywords" value="${pageBean.keywords}" id="so_txt" type="text"  placeholder="请输入商品名称或条码进行搜索" autocomplete="off" />
                 </c:if>
-                <c:if test="${pageBean.keywords!=null}">
+                <c:if test="${pageBean.keywords!=null&&pageBean.keywords!=''}">
                     <input class="text" name="keywords" value="${pageBean.keywords}" id="so_txt" type="text"   autocomplete="off" />
                 </c:if>
                 <input class="submit" type="submit" value="" />
@@ -190,7 +190,7 @@
 <SCRIPT language="javascript">$("#catogry_"+245).addClass("current")</SCRIPT>
 
 
-<div class="main">
+<div class="main" style="height:1000px;">
     <ul class="tab">
 
         <li style="text-indent:15px;margin-right:4px;">分类：</li>

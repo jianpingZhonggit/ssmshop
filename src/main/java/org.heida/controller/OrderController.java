@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -68,5 +69,28 @@ public class OrderController {
         model.addAttribute("pageBean",pageBeanExt);
         model.addAttribute("orderExt",order);
         return "updateOrder";
+    }
+
+    @RequestMapping("/pay")
+    public String pay(Order order){
+        // 支付功能和修改订单状态
+        order.setState(1);
+        order.setOrdertime(new Date());
+        orderService.changeOrder(order);
+        System.out.println("bbb");
+        return "redirect:/index.do";
+    }
+
+    @RequestMapping("/dealOrder")
+    public String dealOrder(HttpServletRequest request,Model model,Integer oid,Integer[] pid,Integer[] count){
+        HttpSession session = request.getSession();
+        User user= (User)session.getAttribute("user");
+        List<CartItem> shop = orderService.shop(oid,pid,count);
+        Double total = orderService.getTotal(shop);
+        Integer oid1 = orderService.dealShop(oid,shop,user.getUid());
+        model.addAttribute("oid",oid1);
+        model.addAttribute("shop",shop);
+        model.addAttribute("total",total);
+        return "shopping";
     }
 }

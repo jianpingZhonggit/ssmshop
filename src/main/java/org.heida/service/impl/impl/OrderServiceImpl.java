@@ -2,13 +2,12 @@ package org.heida.service.impl.impl;
 
 import org.heida.dao.OrderDao;
 import org.heida.model.*;
-import org.heida.service.impl.CategoryService;
-import org.heida.service.impl.OrderItemService;
-import org.heida.service.impl.OrderService;
+import org.heida.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -20,6 +19,10 @@ public class OrderServiceImpl implements OrderService {
     private CategoryService categoryService;
     @Autowired
     private OrderItemService orderItemService;
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private CartService cartService;
 
     @Override
     public Integer makeOrder(Double total,Integer uid) {
@@ -93,5 +96,40 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void updateOrder(Order order) {
         orderDao.updateOrder(order);
+    }
+
+    @Override
+    public void changeOrder(Order order) {
+        orderDao.changeOrder(order);
+    }
+
+    @Override
+    public List<CartItem> shop(Integer oid, Integer[] pid, Integer[] count) {
+        List<CartItem> shop = new LinkedList<>();
+        for (int i = 0; i < pid.length; i++) {
+            CartItem cartItem = new CartItem();
+            Product product = productService.getProductByPid(pid[i]);
+            cartItem.setProduct(product);
+            cartItem.setCount(count[i]);
+            shop.add(cartItem);
+        }
+        return shop;
+    }
+
+    @Override
+    public Double getTotal(List<CartItem> shop) {
+        Double total = 0.0;
+        for (int i = 0; i < shop.size(); i++) {
+            total += shop.get(i).getSubTotal();
+        }
+        return total;
+    }
+
+    @Override
+    public Integer dealShop(Integer oid,List<CartItem> shop, Integer uid) {
+        if(oid==null){
+            return cartService.dealShop(shop,uid);
+        }
+        return oid;
     }
 }

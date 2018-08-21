@@ -64,6 +64,9 @@ public class MainServiceImpl implements MainService {
             }
             return (Cart) cart;
         }else{
+            if(count<1){
+                count = 1;
+            }
             if(cart==null){
                 Cart newCart = new Cart();
                 LinkedList<CartItem> cartItems = new LinkedList<CartItem>();

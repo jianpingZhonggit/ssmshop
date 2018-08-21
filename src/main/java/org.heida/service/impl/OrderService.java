@@ -21,4 +21,13 @@ public interface OrderService {
     OrderExt getOrderExtByOid(Integer oid);
 
     void updateOrder(Order order);
+
+
+    void changeOrder(Order order);
+
+    List<CartItem> shop(Integer oid, Integer[] pid, Integer[] count);
+
+    Double getTotal(List<CartItem> shop);
+
+    Integer dealShop(Integer oid,List<CartItem> shop, Integer uid);
 }

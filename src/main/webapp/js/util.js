@@ -16,43 +16,26 @@ function checkLoginUser(page) {
     }
     return true
 }
-function checkRegisterUser(page) {
-    if(page.username.value==''){
-        alert("用户名不能为空!")
-        return false
-    }
-    if(page.password.value==''){
-        alert("密码不能为空!")
-        return false
-    }
-    if(page.pwd.value==''){
-        alert("确认密码不能为空!")
-        return false
-    }
-    if(page.password.value!=''&&page.pwd.value!=''
-        &&page.password.value!=page.pwd.value){
-        alert("两次密码不一致!")
-        return false
-    }
+function check(page){
     if(page.name.value==''){
-        alert("真实姓名不能为空!")
-        return false
+        alert('收货人姓名不能为空!');
+        page.name.focus();
+        return false;
+    }
+    if(page.addr.value==''){
+        alert('收货人地址不能为空!');
+        page.addr.focus();
+        return false;
     }
     if(page.code.value==''){
-        alert("编号不能为空!")
-        return false
-    }
-    if(page.email.value==''){
-        alert("邮件不能为空!")
-        return false
+        alert("收货人邮编不能为空!");
+        page.code.focus();
+        return false;
     }
     if(page.phone.value==''){
-        alert("手机号不能为空!")
-        return false
+        alert('收货人联系电话不能为空!');
+        page.phone.focus();
+        return false;
     }
-    if(page.address.value==''){
-        alert("地址不能为空!")
-        return false
-    }
-    return true
+    return true;
 }
