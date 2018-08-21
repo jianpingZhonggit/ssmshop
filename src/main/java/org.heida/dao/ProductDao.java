@@ -47,4 +47,5 @@ public interface ProductDao {
     void updateProductByPid(Product product);
 
     void addProduct(Product product);
+
 }

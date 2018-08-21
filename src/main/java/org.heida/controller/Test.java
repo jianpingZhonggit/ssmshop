@@ -4,6 +4,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.heida.dao.ProductDao;
+import org.heida.service.impl.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartRequest;
@@ -132,4 +135,11 @@ public class Test {
         }
         request.setAttribute("message",message);
     }
+
+//    @Autowired
+//    private ProductDao productDao;
+//    @RequestMapping("/hello")
+//    public void hello(){
+//        productDao.test();
+//    }
 }

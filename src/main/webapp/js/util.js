@@ -1,14 +1,17 @@
 function checkLoginUser(page) {
     if(page.username.value==''){
         alert("用户名不能为空!")
+        page.username.focus()
         return false
     }
     if(page.password.value==''){
         alert("密码不能为空!")
+        page.password.focus()
         return false
     }
     if(page.code.value==''){
         alert("请输入验证码!")
+        page.code.focus()
         return false
     }
     return true
