@@ -26,8 +26,11 @@ public class MainPageController {
      */
     @RequestMapping("/index")
     public String index(Model model){
+        //首页显示的一级类目列表
         List<Category> categoryList = mainService.getCategoryList();
+        //首页显示的热门商品列表
         List<Product> hotProductList = mainService.getHotProduct();
+        //首页显示的最新商品列表
         List<Product> newProductList = mainService.getNewProduct();
         model.addAttribute("categoryList",categoryList);
         model.addAttribute("hotProductList",hotProductList);
@@ -35,6 +38,10 @@ public class MainPageController {
         return "index";
     }
 
+    /**
+     * 跳转至后台主页
+     * @return
+     */
     @RequestMapping("/indexOfAdmin")
     public String indexOfAdmin(){
         return "indexOfAdmin";
@@ -57,9 +64,12 @@ public class MainPageController {
      */
     @RequestMapping("/productList")
     public String productList(Model model, PageBean<Product> pageBean){
+        //商品页面显示的一级类目列表
         List<Category> categoryList = mainService.getCategoryList();
+        //根据pageBean中的条件查找符合条件的商品列表,将符合条件
+        //的商品列表封装在pageBean的recordList中
         PageBean<Product> pageBean1 = mainService.getPageBean(pageBean);
-        if(pageBean.getCid()!=null){
+        if(pageBean.getCid()!=null){//如果是选择一节类目下的商品列表,则需要显示二级类目列表
             List<CategorySecond> categorySecondList = mainService.getCategorySecondListByCid(pageBean.getCid());
             model.addAttribute("categorySecondList",categorySecondList);
         }
@@ -69,14 +79,16 @@ public class MainPageController {
     }
 
     /**
-     *
+     *商品详情页面
      * @param pid
      * @param model
      * @return
      */
     @RequestMapping("/productDetail")
     public String productDetail(Integer pid,Model model){
+        //根据商品id获得商品信息
         Product productByPid = mainService.getProductByPid(pid);
+        //商品详情页面显示的一级类目列表
         List<Category> categoryList = mainService.getCategoryList();
         model.addAttribute("product",productByPid);
         model.addAttribute("categoryList",categoryList);
@@ -84,7 +96,7 @@ public class MainPageController {
     }
 
     /**
-     *
+     * 购物车页面
      * @param model
      * @param pid
      * @param count
@@ -93,10 +105,12 @@ public class MainPageController {
      */
     @RequestMapping("/cart")
     public String cart(Model model, Integer pid, Integer count, HttpServletRequest request){
+        //购物车页面显示的一级类目列表
         List<Category> categoryList = mainService.getCategoryList();
         model.addAttribute("categoryList",categoryList);
         HttpSession session = request.getSession();
         Object cart = session.getAttribute("cart");
+        //商品加入购物车中,若商品已存在则数目叠加,否则直接加入购物车中
         Cart newCart = mainService.dealCart(pid,count,cart);
 
         session.setAttribute("cart",newCart);

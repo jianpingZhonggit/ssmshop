@@ -4,7 +4,7 @@
 <mapper namespace="org.heida.dao.OrderDao">
     <insert id="insertOrder" parameterType="org.heida.model.Order">
         <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="oid">
-                SELECT LAST_INSERT_ID() AS id
+          SELECT LAST_INSERT_ID() AS id
         </selectKey>
         insert into orders
         values(default,#{total},#{ordertime},#{state},#{name},#{phone},#{addr},#{uid})

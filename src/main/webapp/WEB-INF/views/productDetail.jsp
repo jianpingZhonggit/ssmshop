@@ -32,37 +32,11 @@
     </script>
     <script type="text/javascript" src="${path}/js/header.js"></script>
     <script type="text/javascript" src="${path}/js/goodsnew_2013.js"></script>
-    <!--<script type="text/javascript" src="${path}/js/quwan-plugin.js"></script>-->
-    <!--<script type="text/javascript" src="${path}/js/action.js"></script>-->
-
-</head>
+    </head>
 <body>
-
-
 <style>.nav a.home {background: url("${path}/images/header_logo_1.png") no-repeat center;}</style>
 <div id="header">
     <ul class="nav">
-        <!--
-        <li id="more"><a class="more" href="javascript:;"></a>
-            <dl>
-                <dt><a href="plist_new.html">新品上市</a></dt>
-                <dt><a href="plist_top.html">热销排行</a></dt>
-
-                <dd><a href="plist_buhuo.html">到货预告</a></dd>
-                <dt><a href="plist_book.html">新品预订</a></dt>
-            </dl>
-        </li>
-        <li id="home"><a class="home" href="/"></a></li>
-        <li><a class="new" href="plist_new.html">新品上市</a></li>
-        <li><a class="top" href="plist_top.html">热销排行</a></li>
-
-        <li><a class="buhuo" href="plist_buhuo.html">到货预告</a></li>
-        <!--li><a class="qing" href="plist_qing.html">好货清仓</a></li>
-        <li><a class="book" href="plist_book.html">新品预订</a></li>
-
-        <li><a class="old" href="index.html">订货系统</a></li>
-
-        -->
     </ul>
 
     <dl class="funcs">
@@ -149,14 +123,7 @@
     <div class="detai_topbox">
         <ul class="address">
 
-            <!--<li>
-                <a href="/">首页</a> / </li><li><a href="plist.html?c=243">家居百货</a> / </li>
-                <li><a href="plist.html?c=334">收纳整理</a> / </li><li><a href="plist.html?c=368">晾衣架</a> / </li>
-                <li>简约多用衣架-5支装(透明色)</li>
-             -->
         </ul>
-
-
         <div class="informations">
             <form action="${path}/cart.do" method="post">
             <input type="text" name="pid" value="${product.pid}" hidden="hidden"/>
@@ -229,7 +196,6 @@
                                           background-color:#ff4246"
                                    type="submit" value="加入购物车"/>
                             <a class="fav" id="248015" type="0" status="1" href="javascript:void(0);">收藏</a>
-                            <!--<a class="no_btn" href="user.html?act=add_booking&amp;id=248015">到货通知我</a>-->
                         </div>
                         <p id="goumaism">请填写选购数量,点击"放入购物车"</p>
                     </div>

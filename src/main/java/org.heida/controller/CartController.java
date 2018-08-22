@@ -27,9 +27,10 @@ public class CartController {
     @RequestMapping("delCartItem")
     public String delCartItem(Integer pid, HttpServletRequest request){
         HttpSession session = request.getSession();
+        //获得session对象中的购物车
         Cart cart = (Cart) session.getAttribute("cart");
+        //根据传入的商品对购物车进行相应的操作
         cartService.delCartItem(cart,pid);
-        LinkedList<CartItem> cartItems = cart.getCartItems();
         return "redirect:/cart.do";
     }
 
@@ -48,24 +49,30 @@ public class CartController {
     @RequestMapping("/shopping")
     public String shopping(Model model,String[] checked,Integer[] count,HttpServletRequest request){
         HttpSession session = request.getSession();
+        //判断用户是否登录,只有登录的用户才能进入付款页面
         User user = (User)session.getAttribute("user");
         List<Category> categoryList = cartService.getCategoryList();
         model.addAttribute("categoryList",categoryList);
-        if(user==null){
+        if(user==null){//用户未登录,提示用户登录,返回购物车页面
             request.setAttribute("login","请先登录");
             return "cart";
-        }else{
+        }else{//用户已登录,但为选中商品,仍然不能进入付款页面,返回购物车页面
             if(checked==null){
                 request.setAttribute("login","请至少选择一件商品");
                 return "cart";
             }
+            //用户已登录,并且选择了商品
             Cart cart = (Cart)session.getAttribute("cart");
+            //从购物车中去除已选中的商品生成订单
             List<CartItem> shop = cartService.shop(checked,count,cart);
+            //计算已选中的商品的总价
             Double total = cartService.getTotal(shop);
+            //生成订单后返回订单号,并根据订单号和商品生成订单项
             Integer oid = cartService.dealShop(shop,user.getUid());
             model.addAttribute("oid",oid);
             model.addAttribute("shop",shop);
             model.addAttribute("total",total);
+            //此时的订单属于提交未完成状态
             return "shopping";
         }
     }
@@ -81,6 +88,7 @@ public class CartController {
         HttpSession session = request.getSession();
         Cart cart = (Cart)session.getAttribute("cart");
         LinkedList<CartItem> cartItems = cart.getCartItems();
+        //遍历购物项,找到需要将数量加1的购物项,数量加1
         for (int i = 0; i < cartItems.size(); i++) {
             if(cartItems.get(i).getProduct().getPid().equals(Integer.valueOf(pid))){
                 cartItems.get(i).setCount(cartItems.get(i).getCount()+1);
@@ -100,6 +108,7 @@ public class CartController {
         HttpSession session = request.getSession();
         Cart cart = (Cart)session.getAttribute("cart");
         LinkedList<CartItem> cartItems = cart.getCartItems();
+        //遍历购物项,找到需要将数量减1的购物项,数量减1
         for (int i = 0; i < cartItems.size(); i++) {
             if(cartItems.get(i).getProduct().getPid().equals(Integer.valueOf(pid))){
                 cartItems.get(i).setCount(cartItems.get(i).getCount()-1);
@@ -107,11 +116,19 @@ public class CartController {
             }
         }
     }
+
+    /**
+     * 由前台页修改购买的商品的数量触发
+     * @param pid
+     * @param count
+     * @param request
+     */
     @RequestMapping("/changeCount")
     public void changeCount(String pid,String count,HttpServletRequest request){
         HttpSession session = request.getSession();
         Cart cart = (Cart)session.getAttribute("cart");
         LinkedList<CartItem> cartItems = cart.getCartItems();
+        //遍历购物项,找到需要改变数量的购物项,改变数量
         for (int i = 0; i < cartItems.size(); i++) {
             if(cartItems.get(i).getProduct().getPid().equals(Integer.valueOf(pid))){
                 cartItems.get(i).setCount(Integer.valueOf(count));

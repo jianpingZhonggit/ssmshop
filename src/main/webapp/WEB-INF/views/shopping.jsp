@@ -132,8 +132,10 @@
                         <input type="text" class="textbox"
                                name="addr"
                                id="userdz" value="${sessionScope.user.address}" size="30" maxlength="100">
+                        <!--
                         <span class="red">*</span>
                         <span class="s999999">用于收货</span>
+                        -->
                     </td>
                 </tr>
                 <tr>
@@ -145,8 +147,10 @@
                                class="textbox" id="useryb"
                                name="code"
                                value="${sessionScope.user.code}" size="10" maxlength="10" style="IME-MODE:disabled">
+                        <!--
                         <span class="red">*</span>
                         <span class="s999999">用于收货</span>
+                        -->
                     </td>
                 </tr>
                 <tr>

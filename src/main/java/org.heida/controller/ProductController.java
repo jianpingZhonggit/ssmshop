@@ -18,8 +18,16 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    /**
+     * 后台商品管理列表
+     * @param model
+     * @param pageBean
+     * @return
+     */
     @RequestMapping("/productListOfAdmin")
     public String productListOfAdmin(Model model, PageBean<Product> pageBean){
+        //根据查询条件查找符合条件的商品,生成商品列表,和查询条件
         PageBean<Product> pageBean1 = productService.getPageBean(pageBean);
         List<Category> categoryList = productService.getCategoryList();
         List<CategorySecond> categorySecondList = productService.getCategorySecondListByCid(pageBean.getCid());
