@@ -2,6 +2,8 @@ package org.heida.controller;
 
 import org.heida.model.*;
 import org.heida.service.impl.OrderService;
+import org.heida.util.AdminLogin;
+import org.heida.util.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +28,13 @@ public class OrderController {
      * @param request
      * @return
      */
+    @UserLogin
     @RequestMapping("/order")
     public String order(String state,Model model, HttpServletRequest request){
-        //订单页面显示的一级类目列表
-        List<Category> categoryList = orderService.getCategoryList();
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
+        //订单页面显示的一级类目列表
+        List<Category> categoryList = orderService.getCategoryList();
         //根据用户id和需要查找的订单状态(state)查找订单列表
         List<OrderExt> orderList = orderService.getOrderList(state,user.getUid());
         model.addAttribute("categoryList",categoryList);
@@ -46,6 +49,7 @@ public class OrderController {
      * @param pageBeanExt
      * @return
      */
+    @AdminLogin
     @RequestMapping("/orderList")
     public String orderList(Model model, PageBeanExt pageBeanExt){
         //根据查询条件查找符合条件的订单,生成订单列表,将订单列表封装和查询条件
@@ -62,6 +66,7 @@ public class OrderController {
      * @param pageBeanExt
      * @return
      */
+    @AdminLogin
     @RequestMapping("/delOrder")
     public String delOrder(HttpServletRequest request,Integer oid,PageBeanExt pageBeanExt){
         //根据订单id查找所属的订单项数目
@@ -71,13 +76,9 @@ public class OrderController {
         }else{//不含订单项,可以删除
             orderService.delOrderByOid(oid);
         }
-        // 重定向,查询的条件数据需要回显,以地址栏的形式带回
-        return "redirect:/order/orderList.do"+
-                "?pageNow="+pageBeanExt.getPageNow()+
-                "&startTime="+pageBeanExt.getStartTime()+
-                "&endTime="+pageBeanExt.getEndTime()+
-                "&keywords="+pageBeanExt.getKeywords()+
-                "&state="+pageBeanExt.getState();
+        request.setAttribute("pageBean",pageBeanExt);
+        // 请求转发
+        return "forward:orderList.do";
     }
 
     /**
@@ -87,6 +88,7 @@ public class OrderController {
      * @param pageBeanExt
      * @return
      */
+    @AdminLogin
     @RequestMapping("/updateOrder")
     public String updateOrder(String state1,Order order,PageBeanExt pageBeanExt){
         //更新订单
@@ -107,6 +109,7 @@ public class OrderController {
      * @param pageBeanExt
      * @return
      */
+    @AdminLogin
     @RequestMapping("/orderDetail")
     public String orderDetail(Model model,Integer oid,PageBeanExt pageBeanExt){
         //订单扩展类,包含订单信息,订单项信息,下单人信息
@@ -121,13 +124,13 @@ public class OrderController {
      * @param order
      * @return
      */
+    @UserLogin
     @RequestMapping("/pay")
     public String pay(Order order){
         // 支付功能和修改订单状态
-        order.setState(1);
+        order.setState(2);
         order.setOrdertime(new Date());
         orderService.changeOrder(order);
-        System.out.println("bbb");
         return "redirect:/index.do";
     }
 
@@ -140,6 +143,7 @@ public class OrderController {
      * @param count
      * @return
      */
+    @UserLogin
     @RequestMapping("/dealOrder")
     public String dealOrder(HttpServletRequest request,Model model,Integer oid,Integer[] pid,Integer[] count){
         HttpSession session = request.getSession();
@@ -154,5 +158,34 @@ public class OrderController {
         model.addAttribute("shop",shop);
         model.addAttribute("total",total);
         return "shopping";
+    }
+
+    /**
+     * 发货
+     * @param oid
+     * @param pageBeanExt
+     * @return
+     */
+    @AdminLogin
+    @RequestMapping("/ship")
+    public String ship(Integer oid,PageBeanExt pageBeanExt){
+        orderService.ship(oid);
+        String url = "redirect:/order/orderList.do"+
+                     "?pageNow="+pageBeanExt.getPageNow()+
+                     "&startTime="+pageBeanExt.getStartTime()+
+                     "&endTime="+pageBeanExt.getEndTime()+
+                     "&keywords="+pageBeanExt.getKeywords();
+        if(pageBeanExt.getState()!=null){
+            url += ("&state="+pageBeanExt.getState());
+        }
+        return url;
+    }
+
+    @UserLogin
+    @RequestMapping("/receipt")
+    public String receipt(Integer oid){
+        orderService.receipt(oid);
+        String url = "redirect:/order/order.do?state=1";
+        return url;
     }
 }

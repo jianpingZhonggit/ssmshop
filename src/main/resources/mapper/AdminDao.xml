@@ -8,4 +8,9 @@
       where username=#{username}
       and password=#{password}
     </select>
+    <update id="updateAdminUser" parameterType="org.heida.model.AdminUser">
+        update adminuser
+        set username=#{username},password=#{password}
+        where uid=#{uid}
+    </update>
 </mapper>

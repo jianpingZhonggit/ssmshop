@@ -19,4 +19,10 @@ public interface CategoryService {
     Integer getCategorySecondCountByCid(Integer cid);
 
     void delCategoryByCid(Integer cid);
+
+    void addCategory(Category category);
+
+    Category getCategoryByCid(Integer cid);
+
+    void updateCategory(Category category);
 }

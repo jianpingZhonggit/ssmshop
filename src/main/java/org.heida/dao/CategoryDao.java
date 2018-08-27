@@ -18,4 +18,10 @@ public interface CategoryDao {
     Integer getRowCount(PageBean<CategoryExt> pageBean);
 
     void delCategoryByCid(Integer cid);
+
+    void addCategory(Category category);
+
+    Category getCategoryByCid(Integer cid);
+
+    void updateCategory(Category category);
 }

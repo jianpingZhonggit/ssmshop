@@ -34,4 +34,17 @@
         delete from category
         where cid=#{cid}
     </update>
+    <update id="addCategory" parameterType="org.heida.model.Category">
+        insert into category
+        values (default ,#{cname})
+    </update>
+    <select id="getCategoryByCid" parameterType="Integer" resultType="org.heida.model.Category">
+        select * from category
+        where cid=#{cid};
+    </select>
+    <update id="updateCategory" parameterType="org.heida.model.Category">
+        update category
+        set cname=#{cname}
+        where cid=#{cid}
+    </update>
 </mapper>

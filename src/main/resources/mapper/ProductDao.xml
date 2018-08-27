@@ -3,14 +3,34 @@
 <!--设置ProductDao接口方法提供sql语句配置-->
 <mapper namespace="org.heida.dao.ProductDao">
     <select id="getProductListByPage" parameterType="org.heida.model.PageBean" resultType="org.heida.model.Product">
-        SELECT pid,pname,market_price,shop_price,image,pdesc,is_hot,pdate,product.csid
+        SELECT product.*
         FROM product
         LEFT JOIN categorysecond
         on product.csid=categorysecond.csid
         <where>
-            is_off = 1
+            is_off=1
             <if test="cid!=null">
                 and cid = #{cid}
+            </if>
+            <if test="csid!=null">
+                and product.csid=#{csid}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                and pname like "%${keywords}%"
+            </if>
+        </where>
+        order by pdate desc
+        limit #{startLimit},#{pageSize}
+    </select>
+
+    <select id="getAllProductListByPage" parameterType="org.heida.model.PageBean" resultType="org.heida.model.Product">
+        SELECT product.*
+        FROM product
+        LEFT JOIN categorysecond
+        on product.csid=categorysecond.csid
+        <where>
+            <if test="cid!=null">
+                cid = #{cid}
             </if>
             <if test="csid!=null">
                 and product.csid=#{csid}
@@ -32,6 +52,7 @@
         from product
         where is_hot=1
         and is_off=1
+        limit 15;
     </select>
     <select id="getNewProduct" resultType="org.heida.model.Product">
         select *
@@ -59,6 +80,24 @@
         </where>
     </select>
 
+    <select id="getAllRowCountByPage" parameterType="org.heida.model.PageBean" resultType="Integer">
+        SELECT count(*)
+        FROM product
+        LEFT JOIN categorysecond
+        on product.csid=categorysecond.csid
+        <where>
+            <if test="cid!=null">
+                cid = #{cid}
+            </if>
+            <if test="csid!=null">
+                and product.csid=#{csid}
+            </if>
+            <if test="keywords!=null and keywords!=''">
+                and pname like "%${keywords}%"
+            </if>
+        </where>
+    </select>
+
     <update id="delProductById" parameterType="Integer">
         delete from product
         where pid=#{pid}
@@ -72,11 +111,23 @@
     </select>
     <update id="updateProductByPid" parameterType="org.heida.model.Product">
         update product
-        set pname=#{pname},shop_price=#{shop_price},is_off=#{is_off}
+        set pname=#{pname},market_price=#{market_price},shop_price=#{shop_price},is_off=#{is_off},image=#{image}
         where pid=#{pid}
     </update>
     <insert id="addProduct" parameterType="org.heida.model.Product">
         insert into product
         values (default ,#{pname},#{market_price},#{shop_price},#{image},#{pdesc},#{is_hot},#{pdate},#{csid},#{is_off})
     </insert>
+    <update id="update">
+        update product
+        set is_off=1
+    </update>
+    <select id="getProduct" resultType="org.heida.model.Product">
+        select * from product;
+    </select>
+    <update id="updateProduct" parameterType="org.heida.model.Product">
+        update product
+        set pname=#{pname}
+        where pid=#{pid}
+    </update>
 </mapper>

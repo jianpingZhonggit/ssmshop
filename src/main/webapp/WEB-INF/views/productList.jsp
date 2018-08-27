@@ -68,7 +68,7 @@
 
     <dl class="funcs">
         <dt>
-            <form id="searchForm" name="searchForm" method="get" action="${path}/productList.do" ">
+            <form id="searchForm" name="searchForm" method="get" action="${path}/productList.do">
                 <c:if test="${pageBean.keywords==null||pageBean.keywords==''}">
                     <input class="text" name="keywords" value="${pageBean.keywords}" id="so_txt" type="text"  placeholder="请输入商品名称或条码进行搜索" autocomplete="off" />
                 </c:if>
@@ -217,7 +217,7 @@
         </c:forEach>
 
         <SCRIPT language="javascript">$("#catogry__"+245).addClass("current")</SCRIPT>
-
+        <!--
         <li class="secondary secondary2" id="secondary_li">
             <span>排序：</span>
 
@@ -228,13 +228,14 @@
             <a id="goods_price" href="?c=245&o=P,A">价格</a>
 
         </li>
+        -->
     </ul>
 
     <div class="waterfall bricks" id="big_div">
         <c:set var="i" value="0"/>
         <c:forEach var="product" items="${pageBean.recordList}">
             <div class="col1 brick" style="width: 244px;height:323px;">
-                <a href="${path}/productDetail.do?pid=${product.pid}"  title="经典款三合一直发器（咖色）">
+                <a href="${path}/productDetail.do?pid=${product.pid}"  title="${product.pname}">
                     <img style="width:244px;height:293px;" onerror="imgerror(event)" src="${path}/images/${product.image}">
                 </a>
 
@@ -244,10 +245,16 @@
                 <dl>
 
                     <dd>
-                        <a class="name" href="${path}/productDetail.do?pid=${product.pid}"  title="经典款三合一直发器（咖色）">${product.pname}
+                        <a class="name" href="${path}/productDetail.do?pid=${product.pid}"  title="${product.pname}">
+                                <span id="${product.pid}">${product.pname}</span>
+                                <script>
+                                    var text = document.getElementById("${product.pid}").innerHTML;
+                                    var keys = document.getElementById("${product.pid}");
+                                    keys.innerHTML=text.replace("${pageBean.keywords}","<font color='red'>${pageBean.keywords}</font>");
+                                </script>
                         </a>
-                        <span>零售价：￥${product.shop_price}</span>
-                        <span style="float:right">进货价：<font color=red>￥${product.market_price}</font></span>
+                        <span>售价:￥${product.shop_price}</span>
+                        <span style="float:right">进价:<font color=red>￥${product.market_price}</font></span>
                     </dd>
                 </dl>
                 <div class="actions" style='display:none'>

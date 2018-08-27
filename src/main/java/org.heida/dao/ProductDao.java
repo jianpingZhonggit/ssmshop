@@ -48,4 +48,13 @@ public interface ProductDao {
 
     void addProduct(Product product);
 
+    void update();
+
+    List<Product> getProduct();
+
+    void updateProduct(Product product);
+
+    Integer getAllRowCountByPage(PageBean<Product> newPageBean);
+
+    List<Product> getAllProductListByPage(PageBean<Product> newPageBean);
 }

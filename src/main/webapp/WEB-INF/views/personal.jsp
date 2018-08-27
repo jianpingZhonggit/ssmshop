@@ -17,6 +17,21 @@
     <title>电商后台</title>
     <link rel="stylesheet" href="${path}/css/style.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="${path}/layui/css/layui.css">
+    <script>
+        function checkAdmin(){
+            var username = document.getElementById("username");
+            var password = document.getElementById("password");
+            if(username.value==''){
+                alert("用户名不能为空!");
+                return false;
+            }
+            if(password.value==''){
+                alert("密码不能为空!")
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -29,7 +44,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    ${sessionScope.adminUser.username}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -47,7 +62,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -83,11 +98,12 @@
                         </button>
                     </div>
                     <hr>
-                    <form class="layui-form" action="index.html">
+                    <form  action="${path}/admin/changeInfo.do" method="post" onsubmit="checkAdmin()">
+                        <input type="text" name="uid" value="${sessionScope.adminUser.uid}" hidden="hidden"/>
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
+                                <input style="width:240px;" type="text" id="username"
                                        value="${sessionScope.adminUser.username}"
                                        name="username" class="layui-input"/>
                             </div>
@@ -95,14 +111,17 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">密&nbsp;&nbsp;码</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="password"
+                                <input style="width:240px;" type="password" id="password"
                                        value="${sessionScope.adminUser.password}"
                                        name="password" class="layui-input"/>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <div class="layui-input-block">
+                            <div class="layui-input-block" style="float:left;">
+                                <!--
                                 <button class="layui-btn" lay-submit lay-filter="formDemo">修改</button>
+                                -->
+                                <input  style="color: white;width:70px;height:38px;background-color: #009688;border:none;" type="submit" value="修改"/>
                             </div>
                         </div>
                     </form>

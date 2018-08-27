@@ -62,7 +62,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -101,16 +101,34 @@
                                 <option value="">订单完成情况</option>
                                 <option value="">全部订单</option>
                                 <c:if test="${pageBean.state==1}">
-                                    <option selected="selected" value="1">已完成</option>
-                                    <option value="2">未完成</option>
+                                    <option selected="selected" value="1">待支付</option>
+                                    <option value="2">待发货</option>
+                                    <option value="3">待收货</option>
+                                    <option value="4">已完成</option>
                                 </c:if>
                                 <c:if test="${pageBean.state==2}">
-                                    <option value="1">已完成</option>
-                                    <option selected="selected" value="2">未完成</option>
+                                    <option value="1">待支付</option>
+                                    <option selected="selected" value="2">待发货</option>
+                                    <option value="3">待收货</option>
+                                    <option value="4">已完成</option>
+                                </c:if>
+                                <c:if test="${pageBean.state==3}">
+                                    <option value="1">待支付</option>
+                                    <option value="2">待发货</option>
+                                    <option selected="selected" value="3">待收货</option>
+                                    <option value="4">已完成</option>
+                                </c:if>
+                                <c:if test="${pageBean.state==4}">
+                                    <option value="1">待支付</option>
+                                    <option value="2">待发货</option>
+                                    <option value="3">待收货</option>
+                                    <option selected="selected" value="4">已完成</option>
                                 </c:if>
                                 <c:if test="${pageBean.state==''||pageBean.state==null}">
-                                    <option value="1">已完成</option>
-                                    <option value="2">未完成</option>
+                                    <option value="1">待支付</option>
+                                    <option value="2">待发货</option>
+                                    <option value="3">待收货</option>
+                                    <option value="4">已完成</option>
                                 </c:if>
 
                             </select>
@@ -137,10 +155,10 @@
                         <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html" dw-title="新增用户" dw-width="100%" dw-height="100%">
                             <i class="layui-icon">&#xe654;</i>新增
                         </button>
-                        -->
                         <button class="layui-btn layui-btn-xs layui-btn-danger dw-batch-delete" dw-url="./delete.json">
                             <i class="layui-icon">&#xe640;</i>删除
                         </button>
+                        -->
                         <button class="layui-btn layui-btn-xs dw-refresh">
                             <i class="layui-icon">&#x1002;</i>刷新
                         </button>
@@ -156,10 +174,13 @@
                         </colgroup>
                         <thead>
                         <tr>
+                            <!--
                             <th class="selectAll">
                                 &nbsp;&nbsp;&nbsp;全选&nbsp;&nbsp;
                                 <input type="checkbox">
                             </th>
+                            -->
+                            <th>订单号</th>
                             <th style="text-align:center;">订单日期</th>
                             <th style="text-align:center;">下单人</th>
                             <th style="text-align:center;">总费用</th>
@@ -170,19 +191,28 @@
                         <tbody>
                         <c:forEach var="orderWapper" items="${pageBean.recordList}">
                         <tr>
+                            <!--
                             <td>
                                 <input type="checkbox" name="id" value="1"/>
                             </td>
+                            -->
+                            <th>${orderWapper.oid}</th>
                             <td>
                                 <fmt:formatDate value="${orderWapper.ordertime}" pattern="yyyy-MM-dd"/>
                             </td>
                             <td>${orderWapper.user.username}</td>
                             <td>${orderWapper.total}</td>
                             <c:if test="${orderWapper.state==1}">
-                                <td>已完成</td>
+                                <td>待付款</td>
                             </c:if>
-                            <c:if test="${orderWapper.state!=1}">
-                                <td>未完成</td>
+                            <c:if test="${orderWapper.state==2}">
+                                <td>待发货</td>
+                            </c:if>
+                            <c:if test="${orderWapper.state==3}">
+                                <td>待收货</td>
+                            </c:if>
+                            <c:if test="${orderWapper.state==4}">
+                                <td>已完成</td>
                             </c:if>
                             <td class="text-center">
                                 <div class="layui-btn-group">
@@ -190,19 +220,27 @@
                                         <i class="layui-icon">&#xe642;</i>
                                         <a style="color:white;" href="${path}/order/orderDetail.do?pageNow=${pageBean.pageNow}&startTime=${pageBean.startTime}&endTime=${pageBean.endTime}&keywords=${pageBean.keywords}&state=${pageBean.state}&oid=${orderWapper.oid}">编辑</a>
                                     </button>
+                                    <c:if test="${orderWapper.state==2}">
+                                        <button style="border:none;width:10px;"/>
+                                        <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html?id=1" dw-title="编辑用户">
+
+                                            <a style="color:white;" href="${path}/order/ship.do?pageNow=${pageBean.pageNow}&startTime=${pageBean.startTime}&endTime=${pageBean.endTime}&keywords=${pageBean.keywords}&state=${pageBean.state}&oid=${orderWapper.oid}">发货</a>
+                                        </button>
+                                    </c:if>
+
                                     <!--删除按钮-->
-                                    <!--
+
                                     <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete" dw-url="delete.html?id=1" dw-title="小明">
                                         <i class="layui-icon">&#xe640;</i>
                                         <a style="color:white;" href="${path}/order/delOrder.do?pageNow=${pageBean.pageNow}&startTime=${pageBean.startTime}&endTime=${pageBean.endTime}&keywords=${pageBean.keywords}&state=${pageBean.state}&oid=${orderWapper.oid}">删除</a>
                                     </button>
                                     <c:if test="${orderWapper.oid==delOid}">
                                     <button style="width:10px;border: none;"/>
-                                    <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete" dw-url="delete.html?id=1" dw-title="小明">
+                                    <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete">
                                         无法删除!
                                     </button>
                                     </c:if>
-                                    -->
+
                                 </div>
                             </td>
                         </tr>

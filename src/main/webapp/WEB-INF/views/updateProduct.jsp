@@ -29,7 +29,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    ${sessionScope.adminUser.username}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -47,7 +47,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -83,12 +83,13 @@
                         </button>
                     </div>
                     <hr>
-                    <form class="layui-form" action="${path}/product/updateProduct.do">
+                    <form class="layui-form" method="post" enctype="multipart/form-data" action="${path}/product/updateProduct.do">
                         <input type="text" name="pageNow" value="${pageBean.pageNow}" hidden="hidden"/>
                         <input type="text" name="keywords" value="${pageBean.keywords}" hidden="hidden"/>
-                        <input type="text" name=""csid value="${pageBean.csid}" hidden="hidden"/>
+                        <input type="text" name="csid" value="${pageBean.csid}" hidden="hidden"/>
                         <input type="text" name="cid" value="${pageBean.cid}" hidden="hidden"/>
                         <input type="text" name="pid" value="${product.pid}" hidden="hidden"/>
+
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品名</label>
                             <div class="layui-input-inline">
@@ -106,17 +107,44 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label">进价</label>
+                            <div class="layui-input-inline">
+                                <input style="width:240px;" type="text"
+                                       value="${product.market_price}"
+                                       name="market_price" class="layui-input"/>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label">是否下架</label>
                             <div class="layui-input-inline">
+                                <select name="is_off">
+                                    <option value="1">恢复</option>
+                                    <option value="0">下架</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商品原图</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="image" value="${product.image}" hidden="hidden"/>
+                                <img name="photo" style="width:160px;height:240px;" src="${path}/images/${product.image}"/>
                                 <!--
                                 <input style="width:240px;" type="text"
-                                       value="${sessionScope.adminUser.password}"
-                                       name="shop_price" class="layui-input"/>
+                                       value="${product.image}"
+                                       name="market_price" class="layui-input"/>
                                 -->
-                                <select name="is_off">
-                                    <option value="0">下架</option>
-                                    <option value="1">恢复</option>
-                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">更换图片</label>
+                            <div class="layui-input-inline">
+                                <input style="width:240px;" type="file"
+                                        name="pic"/>
+                                <!--
+                                <input style="width:240px;" type="text"
+                                       value="${product.market_price}"
+                                       name="market_price" class="layui-input"/>
+                                -->
                             </div>
                         </div>
                         <div class="layui-form-item">

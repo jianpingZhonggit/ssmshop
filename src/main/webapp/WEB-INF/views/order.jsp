@@ -104,7 +104,7 @@
                             <a href="${path}/order/order.do">全部</a>
                         </li>
                         <li class="tab-nav-item">
-                            <a href="${path}/order/order.do?state=2">待付款</a>
+                            <a href="${path}/order/order.do?state=0">未完成</a>
                         </li>
                         <li class="tab-nav-item">
                             <a href="${path}/order/order.do?state=1">已完成</a>
@@ -115,18 +115,18 @@
                             <a href="${path}/order/order.do">全部</a>
                         </li>
                         <li class="tab-nav-item">
-                            <a href="${path}/order/order.do?state=2">待付款</a>
+                            <a href="${path}/order/order.do?state=0">未完成</a>
                         </li>
                         <li class="tab-nav-item tab-active">
                             <a href="${path}/order/order.do?state=1">已完成</a>
                         </li>
                     </c:if>
-                    <c:if test="${state=='2'}">
+                    <c:if test="${state=='0'}">
                         <li class="tab-nav-item">
                             <a href="${path}/order/order.do">全部</a>
                         </li>
                         <li class="tab-nav-item tab-active">
-                            <a href="${path}/order/order.do?state=2">待付款</a>
+                            <a href="${path}/order/order.do?state=0">未完成</a>
                         </li>
                         <li class="tab-nav-item">
                             <a href="${path}/order/order.do?state=1">已完成</a>
@@ -152,10 +152,16 @@
 
                                 </div>
                                 <c:if test="${order.state==1}">
-                                    <span style="color:#0C0C0C;font-size: 24px;">已完成</span>
+                                    <span style="color:red;font-size: 24px;">待付款</span>
                                 </c:if>
                                 <c:if test="${order.state==2}">
-                                    <span style="color: red;font-size: 24px;">未完成</span>
+                                    <span style="color: red;font-size: 24px;">待发货</span>
+                                </c:if>
+                                <c:if test="${order.state==3}">
+                                    <span style="color: red;font-size: 24px;">待收货</span>
+                                </c:if>
+                                <c:if test="${order.state==4}">
+                                    <span style="color:#0C0C0C;font-size: 24px;">已完成</span>
                                 </c:if>
 
                             </a>
@@ -179,16 +185,32 @@
                                 <c:set var="numbers" value="${numbers+orderitem.count}"/>
                             </div>
                             </c:forEach>
-                            <c:if test="${order.state==1}">
+                            <c:if test="${order.state>1}">
                                 <a href="javascript:;" class="aui-mail-payment">
                                     <p style="font-size: 24px;color: #0C0C0C;">
                                         共<em>${numbers}</em>
                                         件商品 实付款: ￥<i>${order.total}</i>
                                     </p>
                                 </a>
-                                <div class="aui-mail-button">
-                                    <input type="submit" value="再次购买"
-                                           style="
+                                <c:if test="${order.state==3}">
+                                    <div class="aui-mail-button">
+                                        <a href="${path}/order/receipt.do?oid=${order.oid}"
+                                                 style="
+                                                 background: none;
+                                                 border: 1px solid #f0250f;
+                                                 color: #f0250f;
+                                                 font-size: 18px;
+                                                 border-radius: 40px;
+                                                 display: block;
+                                                 padding: 2px 14px;
+                                                 display: inline-block;
+                                                 float: right;
+                                                 margin-left: 8px;"
+                                        >确认收货</a>
+                                        <!--
+                                        <input type="text" value="${order.oid}" name="oid" hidden="hidden"/>
+                                        <input type="submit" value="确认收货"
+                                               style="
                                             background: none;
                                             border: 1px solid #f0250f;
                                             color: #f0250f;
@@ -199,9 +221,27 @@
                                             display: inline-block;
                                             float: right;
                                             margin-left: 8px;"/>
-                                </div>
+                                          -->
+                                    </div>
+                                </c:if>
+                                <c:if test="${order.state==4}">
+                                    <div class="aui-mail-button">
+                                        <input type="submit" value="再次购买"
+                                               style="
+                                            background: none;
+                                            border: 1px solid #f0250f;
+                                            color: #f0250f;
+                                            font-size: 18px;
+                                            border-radius: 40px;
+                                            display: block;
+                                            padding: 2px 14px;
+                                            display: inline-block;
+                                            float: right;
+                                            margin-left: 8px;"/>
+                                    </div>
+                                </c:if>
                             </c:if>
-                            <c:if test="${order.state==2}">
+                            <c:if test="${order.state==1}">
                                 <a href="javascript:;" class="aui-mail-payment">
                                     <p style="font-size: 24px;color: #0C0C0C;">
                                         共<em>${numbers}</em>
@@ -210,7 +250,7 @@
                                 </a>
                                 <div class="aui-mail-button">
                                     <input type="text" name="oid" value="${order.oid}" hidden="hidden"/>
-                                    <input type="submit" value="付款"
+                                    <input type="submit" value="去付款"
                                            style="
                                             background: none;
                                             border: 1px solid #f0250f;
@@ -227,6 +267,7 @@
                             </div>
                             </form>
                             </c:if>
+                            <hr/>
                         </c:forEach>
 
 

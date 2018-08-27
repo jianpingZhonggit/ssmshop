@@ -11,6 +11,15 @@
        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <!--扫描web相关的bean-->
     <context:component-scan base-package="org.heida.controller"/>
+    <!--上传文件配置-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--默认编码-->
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--上传文件最大值-->
+        <property name="maxUploadSize" value="104857600"/>
+        <!--内存中的最大值-->
+        <property name="maxInMemorySize" value="4096"/>
+    </bean>
     <!--开启SpringMVC注解模式-->
     <mvc:annotation-driven/>
     <!--静态资源默认servlet配置-->
@@ -22,7 +31,19 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    <!--
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-    -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="org.heida.util.UserLoginInterceptor"></bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/category/**"/>
+            <mvc:mapping path="/categorySecond/**"/>
+            <mvc:mapping path="/product/**"/>
+            <mvc:mapping path="/admin/**"/>
+            <mvc:mapping path="/user/**"/>
+            <mvc:mapping path="/order/**"/>
+            <bean class="org.heida.util.AdminLoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

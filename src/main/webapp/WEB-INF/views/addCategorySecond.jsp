@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 钟建平
-  Date: 2018/8/18
-  Time: 9:54
+  Date: 2018/8/25
+  Time: 15:46
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
@@ -17,6 +17,16 @@
     <title>电商后台</title>
     <link rel="stylesheet" href="${path}/css/style.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="${path}/layui/css/layui.css">
+    <script>
+        function checkCategorySecond(){
+            var csname = document.getElementById("csname");
+            if(canem.val()==''){
+                alert("请输入类目名称!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -75,7 +85,7 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
-                <legend>个人信息</legend>
+                <legend>添加一级类目</legend>
                 <div class="layui-field-box">
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-xs dw-refresh">
@@ -83,46 +93,25 @@
                         </button>
                     </div>
                     <hr>
-                    <form class="layui-form" action="${path}/user/updateUser.do">
-                        <input type="text" name="pageNow" value="${pageBean.pageNow}" hidden="hidden"/>
-                        <input type="text" name="keywords" value="${pageBean.keywords}" hidden="hidden"/>
-                        <input type="text" name="uid" value="${user.uid}" hidden="hidden"/>
+                    <form  action="${path}/categorySecond/addCategorySecond.do" method="post" onsubmit="checkCategorySecond()">
+                        <input type="text" value="${pageBean.pageNow}" name="pageNow" hidden="hidden"/>
+                        <input type="text" value="${pageBean.keywords}" name="keywords" hidden="hidden"/>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">用户名</label>
+                            <label class="layui-form-label">类目名</label>
                             <div class="layui-input-inline">
                                 <input style="width:240px;" type="text"
-                                       value="${user.username}"
-                                       name="username" class="layui-input"/>
+                                       value="" id="csname"
+                                       name="csname" class="layui-input"/>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">密&nbsp;&nbsp;码</label>
+                            <label class="layui-form-label">所属一级类目</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="password"
-                                       value="${user.password}"
-                                       name="password" class="layui-input"/>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">联系电话</label>
-                            <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${user.phone}"
-                                       name="phone" class="layui-input"/>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">是否禁用</label>
-                            <div class="layui-input-inline">
-                                <select name="state" style="width:240px;height:30px;">
-                                    <option value="0">禁止使用</option>
-                                    <option value="1">恢复使用</option>
+                                <select name="cid" style="width:240px;height:40px;">
+                                    <c:forEach var="category" items="${categoryList}">
+                                        <option value="${category.cid}">${category.cname}</option>
+                                    </c:forEach>
                                 </select>
-                                <!--
-                                <input style="width:240px;" type="password"
-                                       value="${sessionScope.adminUser.password}"
-                                       name="password" class="layui-input"/>
-                                -->
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -130,7 +119,7 @@
                                 <!--
                                 <button class="layui-btn" lay-submit lay-filter="formDemo">修改</button>
                                 -->
-                                <input style="color: white;width:70px;height:38px;background-color: #009688;border:none;" type="submit" value="修改"/>
+                                <input style="color: white;width:70px;height:38px;background-color: #009688;border:none;" type="submit" value="添加"/>
                             </div>
                         </div>
                     </form>

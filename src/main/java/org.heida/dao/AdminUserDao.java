@@ -4,4 +4,6 @@ import org.heida.model.AdminUser;
 
 public interface AdminUserDao {
     AdminUser getAdminUser(AdminUser adminUser);
+
+    void updateAdminUser(AdminUser adminUser);
 }

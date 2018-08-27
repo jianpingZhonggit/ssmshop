@@ -1,10 +1,12 @@
 package org.heida.service.impl.impl;
 
 import org.heida.dao.CategorySecondDao;
+import org.heida.model.Category;
 import org.heida.model.CategorySecond;
 import org.heida.model.CategorySecondExt;
 import org.heida.model.PageBean;
 import org.heida.service.impl.CategorySecondService;
+import org.heida.service.impl.CategoryService;
 import org.heida.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class CategorySecondServiceImpl implements CategorySecondService {
     private CategorySecondDao categorySecondDao;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 调用categorySecondDao的getCategorySecondListByCid方法获得
@@ -37,16 +41,16 @@ public class CategorySecondServiceImpl implements CategorySecondService {
             pageBean.setPageNow(1);
         }
         pageBean.setPageSize(pageSize);
-        pageBean.setStartLimit(pageBean.getPageNow()*pageSize-pageSize);
         pageBean.setRowCount(categorySecondDao.getRowCount(pageBean));
         if(pageBean.getRowCount()%pageSize==0){
             pageBean.setPageCount(pageBean.getRowCount()/pageSize);
         }else{
             pageBean.setPageCount(pageBean.getRowCount()/pageSize+1);
         }
-        if(pageBean.getPageCount()<pageBean.getPageNow()){
+        if(pageBean.getPageCount()<pageBean.getPageNow()&&pageBean.getPageCount()>0){
             pageBean.setPageNow(pageBean.getPageCount());
         }
+        pageBean.setStartLimit(pageBean.getPageNow()*pageSize-pageSize);
         pageBean.setRecordList(categorySecondDao.getCategorySecondExtList(pageBean));
         return pageBean;
     }
@@ -66,5 +70,23 @@ public class CategorySecondServiceImpl implements CategorySecondService {
         categorySecondDao.delCategorySecondByCsid(csid);
     }
 
+    @Override
+    public List<Category> getCategoryList() {
+        return categoryService.getCategoryList();
+    }
 
+    @Override
+    public void addCategorySecond(CategorySecond categorySecond) {
+        categorySecondDao.addCategorySecond(categorySecond);
+    }
+
+    @Override
+    public CategorySecond getCategorySecondByCsid(Integer csid) {
+        return categorySecondDao.getCategorySecondByCsid(csid);
+    }
+
+    @Override
+    public void updateCategorySecond(CategorySecond categorySecond) {
+        categorySecondDao.updateCategorySecond(categorySecond);
+    }
 }

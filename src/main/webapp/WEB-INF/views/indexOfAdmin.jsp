@@ -47,7 +47,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a class="layui-this" href="${path}/user/indexOfAdmin.do">首页</a>
+                    <a class="layui-this" href="${path}/admin/indexOfAdmin.do">首页</a>
                     </li>
                 <li class="layui-nav-item">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>

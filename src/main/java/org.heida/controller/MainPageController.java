@@ -38,14 +38,6 @@ public class MainPageController {
         return "index";
     }
 
-    /**
-     * 跳转至后台主页
-     * @return
-     */
-    @RequestMapping("/indexOfAdmin")
-    public String indexOfAdmin(){
-        return "indexOfAdmin";
-    }
 
 
     /**
@@ -66,7 +58,7 @@ public class MainPageController {
     public String productList(Model model, PageBean<Product> pageBean){
         //商品页面显示的一级类目列表
         List<Category> categoryList = mainService.getCategoryList();
-        //根据pageBean中的条件查找符合条件的商品列表,将符合条件
+        //根据pageBean中的条件查找符合条件的商品列表,将符合条件并且在售
         //的商品列表封装在pageBean的recordList中
         PageBean<Product> pageBean1 = mainService.getPageBean(pageBean);
         if(pageBean.getCid()!=null){//如果是选择一节类目下的商品列表,则需要显示二级类目列表

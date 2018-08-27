@@ -40,16 +40,16 @@ public class CategoryServiceImpl implements CategoryService {
             pageBean.setPageNow(1);
         }
         pageBean.setPageSize(pageSize);
-        pageBean.setStartLimit(pageBean.getPageNow()*pageSize-pageSize);
         pageBean.setRowCount(categoryDao.getRowCount(pageBean));
         if(pageBean.getRowCount()%pageSize==0){
             pageBean.setPageCount(pageBean.getRowCount()/pageSize);
         }else{
             pageBean.setPageCount(pageBean.getRowCount()/pageSize+1);
         }
-        if(pageBean.getPageCount()<pageBean.getPageNow()){
+        if(pageBean.getPageCount()<pageBean.getPageNow()&&pageBean.getPageCount()>0){
             pageBean.setPageNow(pageBean.getPageCount());
         }
+        pageBean.setStartLimit(pageBean.getPageNow()*pageSize-pageSize);
         pageBean.setRecordList(categoryDao.getCategoryExtList(pageBean));
         return pageBean;
     }
@@ -62,6 +62,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delCategoryByCid(Integer cid) {
         categoryDao.delCategoryByCid(cid);
+    }
+
+    @Override
+    public void addCategory(Category category) {
+        categoryDao.addCategory(category);
+    }
+
+    @Override
+    public Category getCategoryByCid(Integer cid) {
+        return categoryDao.getCategoryByCid(cid);
+    }
+
+    @Override
+    public void updateCategory(Category category) {
+        categoryDao.updateCategory(category);
     }
 
 

@@ -1,9 +1,11 @@
 package org.heida.controller;
 
+import org.heida.model.Category;
 import org.heida.model.CategorySecond;
 import org.heida.model.CategorySecondExt;
 import org.heida.model.PageBean;
 import org.heida.service.impl.CategorySecondService;
+import org.heida.util.AdminLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ public class CategorySecondController {
      * @param pageBean
      * @return
      */
+    @AdminLogin
     @RequestMapping("/categorySecondList")
     public String categorySecondList(Model model, PageBean<CategorySecondExt> pageBean){
         //根据pageBean中查询条件将符合的二级类目放在pageBean中的recordList中
@@ -41,6 +44,7 @@ public class CategorySecondController {
      * @param cid
      * @param response
      */
+    @AdminLogin
     @RequestMapping("/change")
     public void change(String cid, HttpServletResponse response){
         try {
@@ -78,6 +82,7 @@ public class CategorySecondController {
      * @param csid
      * @return
      */
+    @AdminLogin
     @RequestMapping("/delCategorySecond")
     public String delCategorySecond(HttpServletRequest request,Integer csid){
         //根据二级类目id查询所属商品数目,只有不含商品的二级类目才可以删除
@@ -87,6 +92,41 @@ public class CategorySecondController {
         }else{//不含商品,可以删除
             categorySecondService.delCategorySecondByCsid(csid);
         }
-        return "redirect:/categorySecond/categorySecondList.do";
+        return "forward:categorySecondList.do";
+    }
+
+    @AdminLogin
+    @RequestMapping("addCategorySecondBefore")
+    public String addCategorySecondBefore(Model model,PageBean<CategorySecond> pageBean){
+        List<Category> categoryList = categorySecondService.getCategoryList();
+        model.addAttribute("pageBean",pageBean);
+        model.addAttribute("categoryList",categoryList);
+        return "addCategorySecond";
+    }
+    @AdminLogin
+    @RequestMapping("/addCategorySecond")
+    public String addCategorySecond(HttpServletRequest request,PageBean<CategorySecond> pageBean,CategorySecond categorySecond){
+        categorySecondService.addCategorySecond(categorySecond);
+        request.setAttribute("pageBean",pageBean);
+        return "forward:categorySecondList.do";
+    }
+
+    @AdminLogin
+    @RequestMapping("/toUpdateCategorySecond")
+    public String toUpdateCategorySecond(Model model,Integer csid,PageBean<CategorySecond> pageBean){
+        CategorySecond categorySecond = categorySecondService.getCategorySecondByCsid(csid);
+        List<Category> categoryList = categorySecondService.getCategoryList();
+        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("pageBean",pageBean);
+        model.addAttribute("categorySecond",categorySecond);
+        return "updateCategorySecond";
+    }
+
+    @AdminLogin
+    @RequestMapping("/updateCategorySecond")
+    public String updateCategorySecond(HttpServletRequest request,CategorySecond categorySecond,PageBean<CategorySecond> pageBean){
+        categorySecondService.updateCategorySecond(categorySecond);
+        request.setAttribute("pageBean",pageBean);
+        return "forward:categorySecondList.do";
     }
 }

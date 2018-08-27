@@ -11,7 +11,7 @@
        from orderitem
        where oid=#{oid}
    </select>
-   <select id="getOrderItemCountByPid" parameterType="Integer">
+   <select id="getOrderItemCountByPid" parameterType="Integer" resultType="Integer">
        select count(*)
        from orderitem
        where pid=#{pid}

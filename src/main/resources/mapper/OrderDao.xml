@@ -44,7 +44,12 @@
         ON orderitem.pid=product.pid
         where uid=#{uid}
         <if test="state!=null">
-            and state=#{state}
+            <if test="state==0">
+                and 4 > orders.state
+            </if>
+            <if test="state==1">
+                and orders.state=4
+            </if>
         </if>
         order by ordertime desc
     </select>
@@ -137,7 +142,17 @@
 
     <update id="changeOrder" parameterType="org.heida.model.Order">
       update orders
-      set state=1,name=#{name},addr = #{addr},phone = #{phone},ordertime=#{ordertime}
+      set state=#{state},name=#{name},addr = #{addr},phone = #{phone},ordertime=#{ordertime}
       where oid=#{oid}
+    </update>
+    <update id="ship" parameterType="Integer">
+        update orders
+        set state=3
+        where oid=#{oid}
+    </update>
+    <update id="receipt" parameterType="Integer">
+        update orders
+        set state=4
+        where oid=#{oid}
     </update>
 </mapper>

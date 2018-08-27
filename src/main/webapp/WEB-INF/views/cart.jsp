@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -180,8 +181,8 @@
 <br/><br/>
 <br/><br/><br/>
 <section class="cartMain">
+    <h1>${message}</h1>
     <div class="cartMain_hd">
-        <h1>${login}</h1>
         <ul class="order_lists cartTop">
             <li class="list_chk">
                 <input type="checkbox" id="all" class="whole_check">
@@ -252,7 +253,7 @@
             <div class="piece"><!--已选商品<strong class="piece_num">0</strong>件--></div>
             <div class="totalMoney">共计:<strong class="total_text">￥0.0</strong></div>
             <div class="calBtn">
-                <input style="display: block;
+               <input style="display: block;
                               width: 120px;
                               height: 50px;
                               color: #fff;

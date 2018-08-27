@@ -6,7 +6,7 @@ public class Order {
     private Integer oid;
     private Double total;
     private Date ordertime;
-    private Integer state;//1、代表已完成,2、代表未完成
+    private Integer state;//1、未付款2、已付款等待发货3、已付款等待发货4、已完成
     private String name;
     private String phone;
     private String addr;

@@ -25,4 +25,7 @@ public interface OrderDao {
 
     void changeOrder(Order order);
 
+    void ship(Integer oid);
+
+    void receipt(Integer oid);
 }

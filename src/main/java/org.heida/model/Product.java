@@ -135,11 +135,12 @@ public class Product {
                 ", pname='" + pname + '\'' +
                 ", market_price=" + market_price +
                 ", shop_price=" + shop_price +
-                ", image=" + image +
+                ", image='" + image + '\'' +
                 ", pdesc='" + pdesc + '\'' +
                 ", is_hot=" + is_hot +
                 ", pdate=" + pdate +
                 ", csid=" + csid +
+                ", is_off=" + is_off +
                 '}';
     }
 }

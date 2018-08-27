@@ -19,4 +19,9 @@ public class AdminUserServiceImpl implements AdminUserService {
         }
         return adminUserDao.getAdminUser(adminUser);
     }
+
+    @Override
+    public void updateAdminUser(AdminUser adminUser) {
+        adminUserDao.updateAdminUser(adminUser);
+    }
 }

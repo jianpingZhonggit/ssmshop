@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 return false;
             }else{
                 if(userDao.checkRegisterUser(user)==null){
+                    user.setState(1);
                     userDao.addUser(user);
                     return true;
                 }else{
@@ -54,7 +55,6 @@ public class UserServiceImpl implements UserService {
             pageBean.setPageNow(1);
         }
         pageBean.setPageSize(pageSize);
-        pageBean.setStartLimit((pageBean.getPageNow()-1)*pageSize);
         Integer rowCount = userDao.getRowCount(pageBean);
         pageBean.setRowCount(rowCount);
         if(rowCount%pageSize==0){
@@ -62,9 +62,10 @@ public class UserServiceImpl implements UserService {
         }else{
             pageBean.setPageCount(rowCount/pageSize+1);
         }
-        if(pageBean.getPageCount()<pageBean.getPageNow()){
+        if(pageBean.getPageCount()<pageBean.getPageNow()&&pageBean.getPageCount()>0){
             pageBean.setPageNow(pageBean.getPageCount());
         }
+        pageBean.setStartLimit((pageBean.getPageNow()-1)*pageSize);
         List<User> userList = userDao.getUserList(pageBean);
         pageBean.setRecordList(userList);
         return pageBean;

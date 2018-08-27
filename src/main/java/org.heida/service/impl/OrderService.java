@@ -30,4 +30,8 @@ public interface OrderService {
     Double getTotal(List<CartItem> shop);
 
     Integer dealShop(Integer oid,List<CartItem> shop, Integer uid);
+
+    void ship(Integer oid);
+
+    void receipt(Integer oid);
 }

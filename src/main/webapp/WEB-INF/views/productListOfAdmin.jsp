@@ -33,11 +33,12 @@
                     cid:$("#cid").val()
                 },
                 success: function (data) {
-                    var str = data.split("&")
-                    $("#csid").empty();
-                    $("#csid").append("<option value=''>二级类目</option>");
-                    for(var i=0;i<str.length;i++){
-                        var strs = str[i].split("?");
+                    if(data!=''){
+                        var str = data.split("&")
+                        $("#csid").empty();
+                        $("#csid").append("<option value=''>二级类目</option>");
+                        for(var i=0;i<str.length;i++){
+                         var strs = str[i].split("?");
                         /*if($("#tempcsid").val()==strs[1]){
                             $("#csid").append("<option selected='selected' value='"+strs[1]+"'>"+strs[0]+"</option>");
                         }else{
@@ -45,7 +46,9 @@
 
                         }*/
                         $("#csid").append("<option value='"+strs[1]+"'>"+strs[0]+"</option>");
+                        }
                     }
+
                 }
             });
         }
@@ -62,7 +65,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    ${sessionScope.adminuser.username}
+                    ${sessionScope.adminUser.username}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -80,7 +83,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -158,13 +161,15 @@
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html" dw-title="新增用户" dw-width="100%" dw-height="100%">
                             <i class="layui-icon">&#xe654;</i>
-                            <a style="color:white;" href="${path}/product/addProduct.do">新增</a>
+                            <a style="color:white;" href="${path}/product/addProduct.do?pageNow=${pageBean.pageNow}&cid=${pageBean.cid}&csid=${pageBean.csid}&keywords=${pageBean.keywords}">新增</a>
                         </button>
+                        <!--
                         <button class="layui-btn layui-btn-xs layui-btn-danger dw-batch-delete" dw-url="./delete.json">
                             <i class="layui-icon">&#xe640;</i>
                             <input style="border:none;" class="layui-btn layui-btn-xs layui-btn-danger dw-batch-delete"
                                    type="submit" value="删除">
                         </button>
+                        -->
                         <button class="layui-btn layui-btn-xs dw-refresh">
                             <i class="layui-icon">&#x1002;</i>刷新
                         </button>
@@ -180,15 +185,18 @@
                         </colgroup>
                         <thead>
                         <tr>
+                            <!--
                             <th class="selectAll">
                                 &nbsp;&nbsp;
                                 全选
                                 &nbsp;
                                 <input type="checkbox">
                             </th>
+                            -->
                             <th style="text-align:center;">商品名</th>
                             <th style="text-align:center;">上市时间</th>
-                            <th style="text-align:center;">价格</th>
+                            <th style="text-align:center;">进价</th>
+                            <th style="text-align:center;">售价</th>
                             <th style="text-align:center">下架</th>
                             <th style="text-align:center;">操作</th>
                         </tr>
@@ -196,27 +204,39 @@
                         <tbody>
                         <c:forEach var="product" items="${pageBean.recordList}">
                         <tr>
+                            <!--
                             <td>
                                 <input type="checkbox" name="checked" value="${product.pid}">
                             </td>
+                            -->
                             <td>${product.pname}</td>
                             <td>
                                 <fmt:formatDate value="${product.pdate}" pattern="yyyy-MM-dd"/>
 
                             </td>
+                            <td>${product.market_price}</td>
                             <td>${product.shop_price}</td>
-                            <td>11</td>
+                            <td>
+                                <c:if test="${product.is_off=='0'}">
+                                    已下架
+                                </c:if>
+                                <c:if test="${product.is_off=='1'}">
+                                    在售
+                                </c:if>
+                            </td>
                             <td class="text-center">
                                 <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html?id=1" dw-title="编辑用户">
+                                    <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog">
+                                       <!--
                                         <i class="layui-icon">&#xe642;</i>
-                                        <a href="${path}/product/productDetail.do?pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}&pi=${product.pid}">编辑</a>
+                                        -->
+                                        <a style="color: white;" href="${path}/product/productDetail.do?pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}&csid=${pageBean.csid}&cid=${pageBean.cid}&pid=${product.pid}">编辑</a>
                                     </button>
                                     <!--删除按钮-->
-                                    <!--
+
                                     <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete">
                                         <i class="layui-icon">&#xe640;</i>
-                                        <a href="${path}/product/delProduct.do?pid=${product.pid}&pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}"style="color:white">删除</a>
+                                        <a href="${path}/product/delProduct.do?pid=${product.pid}&pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}&cid=${pageBean.cid}&csid=${pageBean.csid}"style="color:white">删除</a>
                                     </button>
                                     <c:if test="${delPid==product.pid}">
                                         <button style="border: none;width: 10px;"/>
@@ -224,7 +244,7 @@
                                             无法删除!
                                         </button>
                                     </c:if>
-                                    -->
+
                                 </div>
                             </td>
                         </tr>

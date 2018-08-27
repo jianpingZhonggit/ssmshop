@@ -4,6 +4,8 @@ import cn.dsna.util.images.ValidateCode;
 import org.heida.model.PageBean;
 import org.heida.model.User;
 import org.heida.service.impl.UserService;
+import org.heida.util.AdminLogin;
+import org.heida.util.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ public class UserController {
         return "register";
     }
 
-    @RequestMapping("validate")
+    @RequestMapping("/validate")
     public void validate(HttpServletResponse response, HttpServletRequest request){
         ValidateCode validateCode = new ValidateCode(180,35,4,20);
         try {
@@ -64,7 +66,7 @@ public class UserController {
                 request.setAttribute("msg", "输入验证码");
                 request.setAttribute("loginUser",temp);
                 return "forward:login.do";
-            }else if(!(code.equals(rightCode))){
+            }else if(!(code.equalsIgnoreCase(rightCode))){
                 request.setAttribute("msg", "验证码错误");
                 request.setAttribute("loginUser",temp);
                 return "forward:login.do";
@@ -105,6 +107,7 @@ public class UserController {
      * @param request
      * @return
      */
+    @UserLogin
     @RequestMapping("/exit")
     public String exit(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -112,6 +115,7 @@ public class UserController {
         return "redirect:/index.do";
     }
 
+    @AdminLogin
     @RequestMapping("/userList")
     public String userList(Model model,PageBean<User> pageBean){
         PageBean<User> pageBean1 = userService.getPageBean(pageBean);
@@ -119,6 +123,7 @@ public class UserController {
         return "userList";
     }
 
+    @AdminLogin
     @RequestMapping("/delUser")
     public String delUser(HttpServletRequest request,Integer uid){
         Integer orderCount = userService.getOrderCountByUid(uid);
@@ -130,6 +135,7 @@ public class UserController {
         return "redirect:/user/userList.do";
     }
 
+    @AdminLogin
     @RequestMapping("/batchDel")
     public String batchDelUser(Integer[] id){
         if(id!=null){
@@ -140,6 +146,7 @@ public class UserController {
         return "redirect:/user/userList.do";
     }
 
+    @AdminLogin
     @RequestMapping("/userDetail")
     public String userDetail(Model model,Integer uid,PageBean<User> pageBean){
         User user = userService.getUserByUid(uid);
@@ -148,6 +155,7 @@ public class UserController {
         return "updateUser";
     }
 
+    @AdminLogin
     @RequestMapping("/updateUser")
     public String updateUser(User user,PageBean<User> pageBean){
         userService.updateUser(user);
@@ -156,6 +164,7 @@ public class UserController {
                 +"&keywords="+pageBean.getKeywords();
     }
 
+    @AdminLogin
     @RequestMapping("/addUser")
     public String addUser(User user,PageBean<User> pageBean){
         if(user==null){

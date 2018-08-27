@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     public Integer makeOrder(Double total,Integer uid) {
         Order order = new Order();
         order.setTotal(total);
-        order.setState(2);
+        order.setState(1);
         order.setOrdertime(new Date());
         order.setUid(uid);
         orderDao.insertOrder(order);
@@ -59,16 +59,16 @@ public class OrderServiceImpl implements OrderService {
             pageBeanExt.setPageNow(1);
         }
         pageBeanExt.setPageSize(pageSize);
-        pageBeanExt.setStartLimit(pageBeanExt.getPageNow()*pageSize-pageSize);
         pageBeanExt.setRowCount(orderDao.getRowCount(pageBeanExt));
         if(pageBeanExt.getRowCount()%pageSize==0){
             pageBeanExt.setPageCount(pageBeanExt.getRowCount()/pageSize);
         }else{
             pageBeanExt.setPageCount(pageBeanExt.getRowCount()/pageSize+1);
         }
-        if(pageBeanExt.getPageNow()>pageBeanExt.getPageCount()){
+        if(pageBeanExt.getPageNow()>pageBeanExt.getPageCount()&&pageBeanExt.getPageCount()>0){
             pageBeanExt.setPageNow(pageBeanExt.getPageCount());
         }
+        pageBeanExt.setStartLimit(pageBeanExt.getPageNow()*pageSize-pageSize);
         pageBeanExt.setRecordList(orderDao.getAllOrder(pageBeanExt));
         return pageBeanExt;
     }
@@ -131,5 +131,15 @@ public class OrderServiceImpl implements OrderService {
             return cartService.dealShop(shop,uid);
         }
         return oid;
+    }
+
+    @Override
+    public void ship(Integer oid) {
+        orderDao.ship(oid);
+    }
+
+    @Override
+    public void receipt(Integer oid) {
+        orderDao.receipt(oid);
     }
 }

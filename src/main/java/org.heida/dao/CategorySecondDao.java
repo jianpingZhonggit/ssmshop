@@ -21,4 +21,10 @@ public interface CategorySecondDao {
     Integer getCategorySecondCountByCid(Integer cid);
 
     void delCategorySecondByCsid(Integer csid);
+
+    void addCategorySecond(CategorySecond categorySecond);
+
+    CategorySecond getCategorySecondByCsid(Integer csid);
+
+    void updateCategorySecond(CategorySecond categorySecond);
 }

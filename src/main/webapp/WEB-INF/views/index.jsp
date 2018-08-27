@@ -190,7 +190,7 @@
     <div class="waterfall bricks new">
         <c:forEach var="hotProduct" items="${hotProductList}">
             <div class="col1 brick" style="width:244px;height:323px;">
-                <a href="${path}/productDetail.do?pid=${hotProduct.pid}" title="经典款三合一直发器（咖色）">
+                <a href="${path}/productDetail.do?pid=${hotProduct.pid}" title="${hotProduct.pname}">
                     <img  style="width:244px;height:293px;" onerror="imgerror(event)" src="${path}/images/${hotProduct.image}">
                 </a>
                 <p class="bg">
@@ -198,14 +198,14 @@
                 <dl>
                     <dd>
                         <a class="name" href="${path}/productDetail.do?pid=${hotProduct.pid}"
-                           title="经典款三合一直发器（咖色）">${hotProduct.pname}
+                           title="${hotProduct.pname}">${hotProduct.pname}
                         </a>
-                        <span>零售价：￥${hotProduct.shop_price}</span>
-                        <span style="float:right">进货价：<font color=red>￥${hotProduct.market_price}</font></span>
+                        <span>售价:￥${hotProduct.shop_price}</span>
+                        <span style="float:right">进价:<font color=red>￥${hotProduct.market_price}</font></span>
                     </dd>
                 </dl>
                 <div class="actions" style='display:none'>
-                    <a class="buy " href="${path}/productDetail.do?pid=${hotProduct.pid}" id="246802" type="0" status="1">选购</a>
+                    <a class="buy " href="${path}/productDetail.do?pid=${hotProduct.pid}" type="0" status="1">选购</a>
                 </div>
             </div>
         </c:forEach>
@@ -215,15 +215,9 @@
     <br/>
     <div class="waterfall bricks new" id="big_div">
         <c:forEach var="newProduct" items="${newProductList}">
-            <!--<div class="brick col1">
-                <a href="${path}/productdetail.do?pid=${newProduct.pid}">
-                    <img onerror="imgerror(event)" src="${path}/images/${newProduct.image}" alt="${product.pname}">
-                </a>
-            </div>-->
-            <div class="col1 brick" style="width:244px;height:323px;>
-                <a href="${path}/productDetail.do?pid=${newProduct.pid}"
-                   title="经典款三合一直发器（咖色）">
-                    <img style="width:244px;height:293px; onerror="imgerror(event)" src="${path}/images/${newProduct.image}">
+            <div class="col1 brick" style="width:244px;height:323px;">
+                <a href="${path}/productDetail.do?pid=${newProduct.pid}" title="${newProduct.pname}">
+                    <img style="width:244px;height:293px; "src ="${path}/images/${newProduct.image}">
                 </a>
 
                 <p class="bg">
@@ -233,14 +227,14 @@
 
                     <dd>
                         <a class="name" href="${path}/productDetail.do?pid=${newProduct.pid}"
-                           title="经典款三合一直发器（咖色）">${newProduct.pname}
+                           title="${newProduct.pname}">${newProduct.pname}
                         </a>
-                        <span>零售价：￥${newProduct.shop_price}</span>
-                        <span style="float:right">进货价：<font color=red>￥${newProduct.market_price}</font></span>
+                        <span>售价:￥${newProduct.shop_price}</span>
+                        <span style="float:right">进价:<font color=red>￥${newProduct.market_price}</font></span>
                     </dd>
                 </dl>
                 <div class="actions" style='display:none'>
-                    <a class="buy " href="javascript:void(0);" id="246802" type="0" status="1">选购</a>
+                    <a class="buy " href="${path}/productDetail.do?pid=${newProduct.pid}" id="246802" type="0" status="1">选购</a>
                 </div>
             </div>
         </c:forEach>

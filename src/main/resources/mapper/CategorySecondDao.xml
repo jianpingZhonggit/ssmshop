@@ -40,4 +40,18 @@
         delete from categorysecond
         where csid=#{csid}
     </update>
+    <update id="addCategorySecond" parameterType="org.heida.model.CategorySecond">
+        insert into categorysecond
+        values (default, #{csname},#{cid})
+    </update>
+    <select id="getCategorySecondByCsid" parameterType="Integer" resultType="org.heida.model.CategorySecond">
+        select *
+        from categorysecond
+        where csid=#{csid}
+    </select>
+    <update id="updateCategorySecond" parameterType="org.heida.model.CategorySecond">
+        update categorysecond
+        set csname=#{csname},cid=#{cid}
+        where csid=#{csid}
+    </update>
 </mapper>

@@ -29,7 +29,7 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public PageBean<Product> getPageBean(PageBean<Product> pageBean) {
-        PageBean<Product> pageBean1 = productService.getPageBean(pageBean);
+        PageBean<Product> pageBean1 = productService.getPageBean(pageBean,1);
         return pageBean1;
     }
 

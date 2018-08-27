@@ -5,14 +5,17 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.heida.dao.ProductDao;
+import org.heida.model.Product;
 import org.heida.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -147,4 +150,45 @@ public class Test {
          System.out.println(username);
          System.out.println(content);
      }
+
+     @Autowired
+     private ProductDao productDao;
+     @RequestMapping("/index")
+     public void index(){
+         String pnames[]={
+                 "韩版连帽加厚毛衣女外套","女装立领长袖拼接PU皮毛呢",
+                 "韩版女装翻领羔绒夹棉格子毛","冬装韩版女装翻领羔绒夹棉格子毛呢",
+                 "新款优雅奢华毛领白鸭绒轻薄羽","秋冬季毛呢外套女中长款圆领小香",
+                 "女装貉子毛大衣 时尚修身长袖淑","修身显瘦淑女针织长袖打底连衣",
+                 "整貂皮大衣外套中长款收腰立领长袖","中长款貂皮大衣整貂女装",
+                 "韩版毛呢外套女韩范秋冬装厚中长款","打底衫加厚修身羊毛衫女装羊绒衫",
+                 "性感时尚 酷感黑色小圆领露肩","韩版黑色打底衫加厚修身羊毛",
+                 "冬装外套棉衣立领修身商务","商务修身羊毛呢子风衣",
+                 "韩版修身羽绒服加厚","女鞋",
+                 "短靴1","短靴2",
+                 "短靴3","短靴4",
+                 "女款短靴","Thinkpad",
+                 "联想电脑","女装立领长袖拼接PU皮",
+                 "小米6","小米max2",
+                 "小米8","华为荣耀6x",
+                 "华为荣耀7x","华为mate8",
+                 "华为mate9","华为mate10",
+                 "魅蓝note2","魅蓝note6",
+                 "魅蓝max2","一加3T",
+                 "一加5T","360Ns4",
+                 "联想游戏本","华硕笔记本",
+                 "外星人电脑","神州战神",
+                 "惠普"
+         };
+        productDao.update();
+        List<Product> productList = productDao.getProduct();
+        int len = pnames.length;
+        for (int i = 0; i <productList.size() ; i++) {
+             Product product = productList.get(i);
+             product.setPname(pnames[i%len]);
+             productDao.updateProduct(product);
+         }
+    }
+
+
 }

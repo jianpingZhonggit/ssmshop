@@ -14,12 +14,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link type="text/css" rel="stylesheet" href="${path}/css/style1.css" />
-    <!--[if IE 6]>
-    <script src="${path}/js/iepng.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        EvPNG.fix('div, ul, img, li, input, a');
-    </script>
-    <![endif]-->
     <script type="text/javascript" src="${path}/js/jquery-1.11.1.min_044d0927.js"></script>
     <script type="text/javascript" src="${path}/js/jquery.bxslider_e88acd1b.js"></script>
 
@@ -64,6 +58,29 @@
         });
     </script>
     <script>
+        function checkMobile(str) {
+            var re = /^1\d{10}$/;
+            if (re.test(str)) {
+                return true ;
+            } else {
+                return false;
+            }
+        }
+        function checkEmail(str){
+            var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            if(re.test(str)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function checkCode(str){
+            var re = /\d{6}/
+            if(re.test(str)){
+                return true;
+            }
+            return false;
+        }
         function checkRegisterUser() {
             var username = $("[name='username']")
             var password = $("[name='password']")
@@ -101,9 +118,24 @@
                 email.focus()
                 return false;
             }
+            if(!checkEmail(email.val())){
+                alert("邮箱格式错误!");
+                email.focus();
+                return false;
+            }
             if(phone.val()==''){
                 alert('电话不能为空!')
                 phone.focus()
+                return false;
+            }
+            if(!checkMobile(phone.val())){
+                alert("电话格式错误!")
+                phone.focus()
+                return false;
+            }
+            if(address.val()==''){
+                alert("地址不能为空!")
+                address.focus();
                 return false;
             }
             if(code.val()==''){
@@ -111,7 +143,12 @@
                 code.focus()
                 return false;
             }
-            return false;
+            if(!checkCode(code.val())){
+                alert("编号格式有错!");
+                code.focus();
+                return false;
+            }
+            return true;
         }
     </script>
     <title>注册页面</title>

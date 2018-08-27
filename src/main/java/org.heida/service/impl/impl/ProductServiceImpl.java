@@ -11,8 +11,12 @@ import org.heida.service.impl.OrderItemService;
 import org.heida.service.impl.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,29 +32,31 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PageBean<Product> getPageBean(PageBean<Product> pageBean) {
-        PageBean<Product> newPageBean = new PageBean<Product>();
-        newPageBean.setPageSize(pageSize);
-        newPageBean.setCid(pageBean.getCid());
-        newPageBean.setCsid(pageBean.getCsid());
-        newPageBean.setKeywords(pageBean.getKeywords());
+    public PageBean<Product> getPageBean(PageBean<Product> pageBean,Integer is_off) {
         if(pageBean.getPageNow()==null){
-            newPageBean.setPageNow(1);
+            pageBean.setPageNow(1);
+        }
+        pageBean.setPageSize(pageSize);
+        if(is_off==1) {
+            pageBean.setRowCount(productDao.getRowCountByPage(pageBean));
         }else{
-            newPageBean.setPageNow(pageBean.getPageNow());
+            pageBean.setRowCount(productDao.getAllRowCountByPage(pageBean));
         }
-        newPageBean.setStartLimit((newPageBean.getPageNow()-1)*pageSize);
-        newPageBean.setRowCount(productDao.getRowCountByPage(newPageBean));
-        if(newPageBean.getRowCount()%pageSize==0){
-            newPageBean.setPageCount(newPageBean.getRowCount()/pageSize);
+        if(pageBean.getRowCount()%pageSize==0){
+            pageBean.setPageCount(pageBean.getRowCount()/pageSize);
         }else{
-            newPageBean.setPageCount(newPageBean.getRowCount()/pageSize+1);
+            pageBean.setPageCount(pageBean.getRowCount()/pageSize+1);
         }
-        if(newPageBean.getPageCount()<newPageBean.getPageNow()){
-            newPageBean.setPageNow(newPageBean.getPageCount());
+        if(pageBean.getPageCount()<pageBean.getPageNow()&&pageBean.getPageCount()>0){
+            pageBean.setPageNow(pageBean.getPageCount());
         }
-        newPageBean.setRecordList(productDao.getProductListByPage(newPageBean));
-        return newPageBean;
+        pageBean.setStartLimit((pageBean.getPageNow()-1)*pageSize);
+        if(is_off==1) {
+            pageBean.setRecordList(productDao.getProductListByPage(pageBean));
+        }else{
+            pageBean.setRecordList(productDao.getAllProductListByPage(pageBean));
+        }
+        return pageBean;
     }
 
     @Override
@@ -99,12 +105,70 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductByPid(Product product) {
+    public void updateProductByPid(HttpServletRequest request,MultipartFile pic,Product product) {
+        if(!pic.isEmpty()){
+            String savePath = request.getSession().getServletContext().getRealPath("/images/");
+            //删除原来的图片
+            File file = new File(savePath+product.getImage());
+            file.delete();
+            //上传新的图片
+            product.setImage(UUID.randomUUID()+pic.getOriginalFilename());
+            try {
+                InputStream is = pic.getInputStream();
+                FileOutputStream fs = new FileOutputStream(savePath+product.getImage());
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len=is.read(buffer))>0){
+                    fs.write(buffer,0,len);
+                }
+                is.close();
+                fs.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         productDao.updateProductByPid(product);
     }
 
     @Override
-    public void addProduct(Product product) {
-        productDao.addProduct(product);
+    public void addProduct(HttpServletRequest request,MultipartFile image, Product product) {
+        //得到上传文件的保存目录,将上传文件
+        String savePath = request.getSession().getServletContext().getRealPath("/images/");
+        File file = new File(savePath);
+        //判断文件的保存目录是否存在
+        if (!file.exists() && !file.isDirectory()) {
+            System.out.println(savePath + "目录不存在,需要创建");
+            //创建目录
+            file.mkdir();
+        }
+        if(!image.isEmpty()){
+            //得到上传文件名称
+            product.setImage(UUID.randomUUID()+image.getOriginalFilename());
+            product.setIs_off(1);
+            productDao.addProduct(product);
+            String filename = product.getImage();
+            //获取item中的上传文件的输入流
+            try {
+                InputStream in = image.getInputStream();
+                //创建一个文件输出流
+                FileOutputStream out = new FileOutputStream(savePath + "\\" + filename);
+                //创建一个缓冲区
+                byte[] buffer = new byte[1024];
+                //判断输入流中的数据是否已经读完标识
+                int len;
+                //循环将输入流读入到缓冲区中,(len=in.read(buffer))>0就表示in里面还有数据
+                while ((len = in.read(buffer)) > 0) {
+                    //使用FileOutputStream输出流将缓冲区的数据写入到指定的
+                    //目录(savePath+"\\"+filename)当中
+                    out.write(buffer, 0, len);
+                }
+                //关闭输入流
+                in.close();
+                //关闭输出流
+                out.close();
+            }catch (Exception e){
+
+            }
+        }
     }
 }

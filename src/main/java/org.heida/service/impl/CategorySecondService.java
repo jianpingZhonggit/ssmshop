@@ -1,5 +1,6 @@
 package org.heida.service.impl;
 
+import org.heida.model.Category;
 import org.heida.model.CategorySecond;
 import org.heida.model.CategorySecondExt;
 import org.heida.model.PageBean;
@@ -22,4 +23,12 @@ public interface CategorySecondService {
     Integer getProductCountByCsid(Integer csid);
 
     void delCategorySecondByCsid(Integer csid);
+
+    List<Category> getCategoryList();
+
+    void addCategorySecond(CategorySecond categorySecond);
+
+    CategorySecond getCategorySecondByCsid(Integer csid);
+
+    void updateCategorySecond(CategorySecond categorySecond);
 }

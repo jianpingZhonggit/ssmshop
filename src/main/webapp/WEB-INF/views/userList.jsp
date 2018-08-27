@@ -50,7 +50,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -101,6 +101,7 @@
                     <hr>
                     <form action="${path}/user/batchdel.do" method="post">
                     <div class="layui-btn-group">
+                        <!--
                         <button class="layui-btn layui-btn-xs layui-btn-normal
                             dw-dailog" dw-url="create.html" dw-title="新增用户" dw-width="100%" dw-height="100%">
                             <i class="layui-icon">&#xe654;</i>新增
@@ -109,6 +110,7 @@
                             <i class="layui-icon">&#xe640;</i>
                             <input style="border:none;" class="layui-btn layui-btn-xs layui-btn-danger dw-batch-delete" type="submit" value="删除">
                         </button>
+                        -->
                         <button class="layui-btn layui-btn-xs dw-refresh">
                             <i class="layui-icon">&#x1002;</i>刷新
                         </button>
@@ -124,14 +126,17 @@
                         </colgroup>
                         <thead>
                         <tr>
+                            <!--
                             <th class="selectAll">
                                 &nbsp;&nbsp;
                                 全选
                                 &nbsp;
                                 <input type="checkbox">
                             </th>
+                            -->
                             <th style="text-align:center;">用户名</th>
                             <th style="text-align:center;">密码</th>
+                            <th style="text-align:center;">真实姓名</th>
                             <th style="text-align:center">联系电话</th>
                             <th style="text-align:center;">操作</th>
                         </tr>
@@ -139,14 +144,19 @@
                         <tbody>
                         <c:forEach var="user" items="${pageBean.recordList}">
                         <tr>
+                            <!--
                             <td>
                                 <input type="checkbox" name="id" value="${user.uid}">
                             </td>
+                            -->
                             <td>
                                 ${user.username}
                             </td>
                             <td>
                                 <input style="border: none;background-color: white;" type="password" disabled="disabled" value="${user.password}"/>
+                            </td>
+                            <td>
+                                ${user.name}
                             </td>
                             <td>
                                 ${user.phone}

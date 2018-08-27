@@ -32,7 +32,29 @@
     </script>
     <script type="text/javascript" src="${path}/js/header.js"></script>
     <script type="text/javascript" src="${path}/js/goodsnew_2013.js"></script>
-    </head>
+    <script>
+        function checkCount(str){
+            re = /^\+?[1-9][0-9]*$/;
+            if(re.test(str)){
+                return true;
+            }
+            return false;
+        }
+        window.onload=function(){
+          var count = document.getElementById("shuliang");
+          count.onblur=function(){
+              if(count.value==''){
+                  alert("请输入商品数目!");
+                  return;
+              }else if(!checkCount(count.value)){
+                  alert("商品数目必须是正整数!");
+                  count.value=1;
+                  return;
+              }
+          }
+        }
+    </script>
+</head>
 <body>
 <style>.nav a.home {background: url("${path}/images/header_logo_1.png") no-repeat center;}</style>
 <div id="header">
@@ -125,7 +147,7 @@
 
         </ul>
         <div class="informations">
-            <form action="${path}/cart.do" method="post">
+            <form action="${path}/cart.do" method="post" onsubmit="checkProduct()">
             <input type="text" name="pid" value="${product.pid}" hidden="hidden"/>
             <div class="pic">
                 <div class="wrapper">

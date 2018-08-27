@@ -17,6 +17,62 @@
     <title>添加商品</title>
     <link rel="stylesheet" href="${path}/css/style.css" media="screen" type="text/css" />
     <link rel="stylesheet" href="${path}/layui/css/layui.css">
+    <script type="text/javascript" src="${path}/js/jquery.min.js"></script>
+    <script>
+        function checkProduct(){
+            var pname = document.getElementById("pname");
+            var market_price = document.getElementById("market_price");
+            var shop_price = document.getElementById("shop_price");
+            var pdesc = document.getElementById("pdesc");
+            var image = document.getElementById("image");
+            if(pname.value==''){
+                alert("请输入商品名称!");
+                return false;
+            }
+            if(market_price.value==''){
+                alert('进价不能为空!');
+                return false;
+            }
+            if(shop_price.value==''){
+                alert("售价不能为空!");
+                return false;
+            }
+            if(pdesc.value==''){
+                alert('输入商品描述!');
+                return false;
+            }
+            if(image.value==''){
+                alert('上传商品图片!');
+                return false;
+            }
+            alert("ok")
+            return true;
+        }
+        function getchange(){
+            $.ajax({
+                type: "get",
+                url: "${path}/categorySecond/change.do",
+                data: {
+                    cid:$("#cid").val()
+                },
+                success: function (data) {
+                    var str = data.split("&")
+                    $("#csid").empty();
+                    for(var i=0;i<str.length;i++){
+                        var strs = str[i].split("?");
+                        /*if($("#tempcsid").val()==strs[1]){
+                            $("#csid").append("<option selected='selected' value='"+strs[1]+"'>"+strs[0]+"</option>");
+                        }else{
+                            $("#csid").append("<option value='"+strs[1]+"'>"+strs[0]+"</option>");
+
+                        }*/
+                        $("#csid").append("<option value='"+strs[1]+"'>"+strs[0]+"</option>");
+                    }
+                }
+            });
+        }
+
+    </script>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -29,7 +85,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
+                    ${sessionScope.adminUser.username}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -47,7 +103,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -83,77 +139,79 @@
                         </button>
                     </div>
                     <hr>
-                    <form class="layui-form" action="${path}/product/addProduct.do">
+                    <form  method="post" action="${path}/product/addProduct.do" enctype="multipart/form-data" onsubmit="return checkProduct(this)">
                         <input type="text" name="pageNow" value="${pageBean.pageNow}" hidden="hidden"/>
                         <input type="text" name="keywords" value="${pageBean.keywords}" hidden="hidden"/>
-                        <input type="text" name=""csid value="${pageBean.csid}" hidden="hidden"/>
-                        <input type="text" name="cid" value="${pageBean.cid}" hidden="hidden"/>
-                        <input type="text" name="pid" value="${product.pid}" hidden="hidden"/>
+                        <input type="text" name="csid1" value="${pageBean.csid}" hidden="hidden"/>
+                        <input type="text" name="cid1" value="${pageBean.cid}" hidden="hidden"/>
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品名</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${product.pname}"
+                                <input style="width:270px;" type="text"
+                                       value="${product.pname}" id="pname"
                                        name="pname" class="layui-input"/>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">进价</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${product.market_price}"
+                                <input style="width:270px;" type="text"
+                                       value="${product.market_price}" id="market_price"
                                        name="market_price" class="layui-input"/>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">售价</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${product.shop_price}"
+                                <input style="width:270px;" type="text"
+                                       value="${product.shop_price}" id="shop_price"
                                        name="shop_price" class="layui-input"/>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品描述</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${product.pdesc}"
-                                       name="pdesc" class="layui-input"/>
+                                <textarea cols="33" rows="8" name="pdesc">${product.pdesc}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">所属类别</label>
+                            <label class="layui-form-label">所属一级类目</label>
                             <div class="layui-input-inline">
-                                <select name="csid">
-                                    <option value="0">服装</option>
-                                    <option value="1">鞋子</option>
+                                <select name="cid" style="width:270px;height:40px;"id="cid" onchange="getchange()">
+                                    <c:forEach var="category" items="${categoryList}">
+                                        <option value="${category.cid}">${category.cname}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所属二级类目</label>
+                            <div class="layui-input-inline">
+                                <select style="width:270px;height:40px;" name="csid" id="csid">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">是否热门</label>
+                            <div class="layui-input-inline">
+                                <!--
+                                <input style="width:270px;" type="text"
+                                       value="${sessionScope.adminUser.password}"
+                                       name="shop_price" class="layui-input"/>
+                                 -->
+                                <select name="is_hot" style="width:270px;height:40px;">
+                                    <option value="0">不热门</option>
+                                    <option value="1">热门</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品图片</label>
                             <div class="layui-input-inline">
-                                <input style="width:240px;" type="text"
-                                       value="${product.image}"
-                                       name="image" class="layui-input"/>
+                                <input type="file" id="image"
+                                       name="pic" />
                             </div>
                         </div>
-                        <!--
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">是否热门</label>
-                            <div class="layui-input-inline">
-                                <!--
-                                <input style="width:240px;" type="text"
-                                       value="${sessionScope.adminUser.password}"
-                                       name="shop_price" class="layui-input"/>
-
-                                <select name="is_off">
-                                    <option value="0">热门</option>
-                                    <option value="1">恢复</option>
-                                </select>
-                            </div>
-                        </div>
-                        -->
                         <div class="layui-form-item">
                             <div class="layui-input-block" style="float:left;">
                                 <!--
@@ -165,6 +223,7 @@
                     </form>
                 </div>
             </fieldset>
+
         </div>
     </div>
     <div class="layui-footer">

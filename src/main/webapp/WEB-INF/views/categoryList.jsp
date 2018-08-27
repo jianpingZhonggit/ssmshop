@@ -49,7 +49,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${path}/indexOfAdmin.do">首页</a>
+                    <a href="${path}/admin/indexOfAdmin.do">首页</a>
                 </li>
                 <li class="layui-nav-item">
                     <a class="" href="${path}/admin/personal.do">个人中心</a>
@@ -99,8 +99,9 @@
                     </form>
                     <hr>
                     <div class="layui-btn-group">
-                        <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html" dw-title="新增用户" dw-width="100%" dw-height="100%">
-                            <i class="layui-icon">&#xe654;</i>新增
+                        <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog">
+                            <i class="layui-icon">&#xe654;</i>
+                            <a href="${path}/category/addCategoryBefore.do?pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}">新增</a>
                         </button>
                         <button class="layui-btn layui-btn-xs layui-btn-danger dw-batch-delete" dw-url="./delete.json">
                             <i class="layui-icon">&#xe640;</i>删除
@@ -120,12 +121,14 @@
                         </colgroup>
                         <thead>
                         <tr>
+                            <!--
                             <th class="selectAll">
                                 &nbsp;&nbsp;
                                 全选
                                 &nbsp;&nbsp;
                                 <input type="checkbox">
                             </th>
+                            -->
                             <th style="text-align:center;">类目名</th>
                             <th style="text-align:center;">类目下的二级类目</th>
                             <th style="text-align:center;">操作</th>
@@ -134,9 +137,12 @@
                         <tbody>
                         <c:forEach var="category" items="${pageBean.recordList}">
                         <tr>
+                            <!--
                             <td>
                                 <input type="checkbox" name="id" value="1">
                             </td>
+                            -->
+
                             <td>${category.cname}</td>
                             <td>
                                 <c:set var="i" value="0"/>
@@ -150,10 +156,12 @@
                             </td>
                             <td class="text-center">
                                 <div class="layui-btn-group">
-                                    <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html?id=1" dw-title="编辑用户">
-                                        <i class="layui-icon">&#xe642;</i>编辑
+                                    <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" >
+                                        <i class="layui-icon">&#xe642;</i>
+                                        <a style="color: white;"
+                                           href="${path}/category/toUpdateCategory.do?pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}&cid=${category.cid}">编辑</a>
                                     </button>
-                                    <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete" dw-url="delete.html?id=1" dw-title="小明">
+                                    <button class="layui-btn layui-btn-xs layui-btn-danger dw-delete" >
                                         <i class="layui-icon">&#xe640;</i>
                                         <a style="color:white;" href="${path}/category/delCategory.do?pageNow=${pageBean.pageNow}&keywords=${pageBean.keywords}&cid=${category.cid}">
                                             删除

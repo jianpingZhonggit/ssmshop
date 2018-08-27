@@ -2,6 +2,7 @@ package org.heida.controller;
 
 import org.heida.model.*;
 import org.heida.service.impl.CartService;
+import org.heida.util.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +47,7 @@ public class CartController {
      *                未登录的提示信息
      * @return 返回购物车界面或者订单详情页面
      */
+    @UserLogin
     @RequestMapping("/shopping")
     public String shopping(Model model,String[] checked,Integer[] count,HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -54,11 +56,11 @@ public class CartController {
         List<Category> categoryList = cartService.getCategoryList();
         model.addAttribute("categoryList",categoryList);
         if(user==null){//用户未登录,提示用户登录,返回购物车页面
-            request.setAttribute("login","请先登录");
+            request.setAttribute("message","请先登录");
             return "cart";
         }else{//用户已登录,但为选中商品,仍然不能进入付款页面,返回购物车页面
             if(checked==null){
-                request.setAttribute("login","请至少选择一件商品");
+                request.setAttribute("message","请至少选择一件商品");
                 return "cart";
             }
             //用户已登录,并且选择了商品

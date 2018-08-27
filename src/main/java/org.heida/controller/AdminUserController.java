@@ -2,6 +2,7 @@ package org.heida.controller;
 
 import org.heida.model.AdminUser;
 import org.heida.service.impl.AdminUserService;
+import org.heida.util.AdminLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +25,17 @@ public class AdminUserController {
         return "loginOfAdmin";
     }
 
+
+    @AdminLogin
+    @RequestMapping("/indexOfAdmin")
+    public String indexOfAdmin(){
+        return "indexOfAdmin";
+    }
     /**
      * 跳转至后台个人信息页面
      * @return
      */
+    @AdminLogin
     @RequestMapping("/personal")
     public String personal(){
         return "personal";
@@ -59,6 +67,7 @@ public class AdminUserController {
      * @param request
      * @return
      */
+    @AdminLogin
     @RequestMapping("/update")
     public String update(HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -73,11 +82,19 @@ public class AdminUserController {
      * @param request
      * @return
      */
+    @AdminLogin
     @RequestMapping("/exit")
     public String exit(HttpServletRequest request){
         HttpSession session = request.getSession();
         //从session中删除后台用户信息,请求转发至前台页面
         session.removeAttribute("adminUser");
         return "forward:/index.do";
+    }
+
+    @AdminLogin
+    @RequestMapping("/changeInfo")
+    public String changeInfo(AdminUser adminUser){
+        adminUserService.updateAdminUser(adminUser);
+        return "redirect:login.do";
     }
 }
