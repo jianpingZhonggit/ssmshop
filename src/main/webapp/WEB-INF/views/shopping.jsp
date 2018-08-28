@@ -65,8 +65,13 @@
 
     <dl class="funcs">
         <dt>
-            <form id="searchForm" name="searchForm" method="get" action="psearch.html" onsubmit="return checkSearchFormAction();">
-                <input class="text" name="keywords" id="so_txt" type="text" value="" placeholder="请输入商品名称或条码进行搜索" autocomplete="off" />
+            <form id="searchForm" name="searchForm" method="get" action="${path}/productList.do ">
+                <c:if test="${pageBean.keywords==null||pageBean.keywords==''}">
+                    <input class="text" name="keywords" value="${pageBean.keywords}" id="so_txt" type="text"  placeholder="请输入商品名称进行搜索" autocomplete="off" />
+                </c:if>
+                <c:if test="${pageBean.keywords!=null&&pageBean.keywords!=''}">
+                    <input class="text" name="keywords" value="${pageBean.keywords}" id="so_txt" type="text"   autocomplete="off" />
+                </c:if>
                 <input class="submit" type="submit" value="" />
             </form>
         </dt>

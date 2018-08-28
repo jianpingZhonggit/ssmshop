@@ -75,6 +75,7 @@
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
             <fieldset class="layui-elem-field">
+                <!--
                 <legend>控制台-系统信息</legend>
                 <div class="layui-field-box">
                     <table class="layui-table">
@@ -109,10 +110,17 @@
                         </tbody>
                     </table>
                 </div>
+                -->
             </fieldset>
             <fieldset class="layui-elem-field">
-                <legend>控制台-最新公告</legend>
+                <legend>Welcome</legend>
                 <div class="layui-field-box">
+                    <br/>
+                    <br/>
+                    <h1>欢迎进入后台管理系统</h1>
+                    <br/><br/>
+                    <br/><br/>
+                    <!--
                     <table class="layui-table">
                         <colgroup>
                             <col width="150">
@@ -144,11 +152,11 @@
                         </tr>
                         </tbody>
                     </table>
+                    -->
                 </div>
             </fieldset>
         </div>
     </div>
-
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         © layui.com - 底部固定区域

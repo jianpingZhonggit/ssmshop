@@ -3,6 +3,7 @@ package org.heida.controller;
 import org.heida.model.*;
 import org.heida.service.impl.MainService;
 import org.heida.model.PageBean;
+import org.heida.util.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -95,6 +96,7 @@ public class MainPageController {
      * @param request
      * @return
      */
+    @UserLogin
     @RequestMapping("/cart")
     public String cart(Model model, Integer pid, Integer count, HttpServletRequest request){
         //购物车页面显示的一级类目列表

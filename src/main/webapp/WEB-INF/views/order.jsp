@@ -57,7 +57,7 @@
             <form id="searchForm" name="searchForm" method="get" action="${path}/productlist.do"
                   onsubmit="return checkSearchFormAction();">
                 <input class="text" name="keywords" id="so_txt" type="text"
-                       value="" placeholder="请输入商品名称或条码进行搜索" />
+                       value="" placeholder="请输入商品名称进行搜索" />
                 <input class="submit" type="submit" value="" />
             </form>
         </dt>

@@ -216,13 +216,15 @@
                             </c:if>
                             <td class="text-center">
                                 <div class="layui-btn-group">
+                                    <!--
                                     <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html?id=1" dw-title="编辑用户">
                                         <i class="layui-icon">&#xe642;</i>
                                         <a style="color:white;" href="${path}/order/orderDetail.do?pageNow=${pageBean.pageNow}&startTime=${pageBean.startTime}&endTime=${pageBean.endTime}&keywords=${pageBean.keywords}&state=${pageBean.state}&oid=${orderWapper.oid}">编辑</a>
                                     </button>
+                                    -->
                                     <c:if test="${orderWapper.state==2}">
                                         <button style="border:none;width:10px;"/>
-                                        <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" dw-url="create.html?id=1" dw-title="编辑用户">
+                                        <button class="layui-btn layui-btn-xs layui-btn-normal dw-dailog" >
 
                                             <a style="color:white;" href="${path}/order/ship.do?pageNow=${pageBean.pageNow}&startTime=${pageBean.startTime}&endTime=${pageBean.endTime}&keywords=${pageBean.keywords}&state=${pageBean.state}&oid=${orderWapper.oid}">发货</a>
                                         </button>

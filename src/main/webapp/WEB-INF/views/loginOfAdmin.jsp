@@ -25,22 +25,43 @@
         <h1>电商后台管理系统</h1>
     </header>
     <div class="beg-login-main">
+        <font color="red" size="5">${msg}</font>
+        <br/>
         <form action="${path}/admin/checkAdminUser.do" method="post">
             <div class="layui-form-item">
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe612;</i>
                 </label>
                 <input type="text" lay-verify="required"
-                       name="username" autocomplete="off"
-                       placeholder="这里输入账号" class="layui-input" lay-verType="tips">
+                       name="username" value="${temp.username}"
+                       autocomplete="off"
+                       placeholder="这里输入账号"
+                       class="layui-input"
+                       lay-verType="tips">
             </div>
             <div class="layui-form-item">
                 <label class="beg-login-icon">
                     <i class="layui-icon">&#xe642;</i>
                 </label>
-                <input type="password" lay-verify="required" name="password" autocomplete="off" placeholder="这里输入密码" class="layui-input" lay-verType="tips">
+                <input type="password" lay-verify="required"
+                       name="password" autocomplete="off"
+                       value="${temp.password}"
+                       placeholder="这里输入密码"
+                       class="layui-input"
+                       lay-verType="tips"
+                >
             </div>
-            <input type="text" name="name" value="aaa" hidden="hidden"/>
+            <div class="layui-form-item">
+                <!--
+                <label class="beg-login-icon">
+                    <i class="layui-icon">&#xe642;</i>
+                </label>
+                <input type="password" lay-verify="required" name="password" autocomplete="off" placeholder="这里输入密码" class="layui-input" lay-verType="tips">
+                -->
+                <input style="width:22px;height:22px;"
+                       name="checked" value="checked" type="checkbox"/>
+                <font size="5">记住密码一周</font>
+            </div>
             <div class="layui-form-item">
                 <div class="beg-pull">
                     <input style="width:100%;height:30px;text-align:center;" type="submit" value="登     录"/>

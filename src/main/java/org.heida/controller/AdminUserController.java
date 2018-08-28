@@ -5,10 +5,16 @@ import org.heida.service.impl.AdminUserService;
 import org.heida.util.AdminLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 @Controller()
 @RequestMapping("/admin")
@@ -21,7 +27,26 @@ public class AdminUserController {
      * @return
      */
     @RequestMapping("/login")
-    public String login(){
+    public String login(HttpServletRequest request,Model model){
+        AdminUser temp = new AdminUser();
+        Cookie[] cookies = request.getCookies();
+        for (int i = 0; i <cookies.length; i++) {
+            if("adminUsername".equals(cookies[i].getName())){
+                try {
+                    temp.setUsername(URLDecoder.decode(cookies[i].getValue(),"utf-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+            if("adminPassword".equals(cookies[i].getName())){
+                try {
+                    temp.setPassword(URLDecoder.decode(cookies[i].getValue(),"utf-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        model.addAttribute("temp",temp);
         return "loginOfAdmin";
     }
 
@@ -48,13 +73,29 @@ public class AdminUserController {
      * @return
      */
     @RequestMapping("/checkAdminUser")
-    public String checkAdminUser(AdminUser adminUser, HttpServletRequest request){
+    public String checkAdminUser(HttpServletResponse response,String checked, AdminUser adminUser, HttpServletRequest request){
         AdminUser adminUser1 = adminUserService.checkAdminUser(adminUser);
-        //登录的用户名或密码错误,重定向至后台登录页面
+        //登录的用户名或密码错误,请求转发至后台登录页面
         if(adminUser1==null){
-            return "redirect:/admin/login.do";
+            request.setAttribute("msg","用户名或密码错误!");
+            return "forward:login.do";
         }else{
             //登录成功,将用户信息存在Session中,跳转至后台首页
+            if("checked".equals(checked)){
+                try {
+                    String username = URLEncoder.encode(adminUser.getUsername(),"utf-8");
+                    Cookie adminUsername = new Cookie("adminUsername",username);
+                    adminUsername.setMaxAge(60*24*7);
+
+                    String password = URLEncoder.encode(adminUser.getPassword(),"utf-8");
+                    Cookie adminPassword = new Cookie("adminPassword",password);
+                    adminPassword.setMaxAge(60*24*7);
+                    response.addCookie(adminUsername);
+                    response.addCookie(adminPassword);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             HttpSession session = request.getSession();
             session.setAttribute("adminUser",adminUser1);
             return "indexOfAdmin";

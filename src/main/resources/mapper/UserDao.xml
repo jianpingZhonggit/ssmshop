@@ -14,8 +14,8 @@
         where username=#{username}
     </select>
     <update id="addUser" parameterType="User">
-        insert into user(username, password, name, email, phone, address, code)
-        values (#{username},#{password},#{name},#{email},#{phone},#{address},#{code})
+        insert into user(username, password, name, email, phone,state,address, code)
+        values (#{username},#{password},#{name},#{email},#{phone},#{state},#{address},#{code})
     </update>
     <select id="getRowCount" parameterType="org.heida.model.PageBean" resultType="Integer">
         select count(*)
