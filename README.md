@@ -5,9 +5,11 @@
 涉及内容:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 javase基础知识(包括文件操作,类和对象,多态)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 javaee部分(包括servlet,jsp以及spring,springmvc,mybatis的使用))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 前端部分(包括html,css,js的使用,ajax异步刷新,jquery的使用)<br/>
-##功能(前台页面展示和后台管理)
+## 功能(前台页面展示和后台管理)
 分为前台页面和后台管理<br/>
 ## 前台页面功能:<br/>
 任何人都可以浏览商品,按条件查找商品,分页显示.<br/>
