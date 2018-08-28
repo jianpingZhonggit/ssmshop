@@ -181,11 +181,38 @@ public class OrderController {
         return url;
     }
 
+    /**
+     * 收货
+     * @param oid
+     * @return
+     */
     @UserLogin
     @RequestMapping("/receipt")
     public String receipt(Integer oid){
         orderService.receipt(oid);
         String url = "redirect:/order/order.do?state=1";
         return url;
+    }
+
+    /**
+     * 取消订单
+     * @param request
+     * @param oid
+     * @param state
+     * @return
+     */
+    @UserLogin
+    @RequestMapping("/cancel")
+    public String cancel(HttpServletRequest request,Integer oid,String state){
+        //该订单下的订单项
+        List<OrderItem> orderItemList = orderService.getOrderItemByOid(oid);
+        //删除订单项
+        for (int i = 0; i < orderItemList.size(); i++) {
+            orderService.delOrderItem(orderItemList.get(i).getItemid());
+        }
+        //删除订单
+        orderService.delOrderByOid(oid);
+        request.setAttribute("state",state);
+        return "forward:order.do";
     }
 }

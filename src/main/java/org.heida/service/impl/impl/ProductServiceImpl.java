@@ -171,4 +171,9 @@ public class ProductServiceImpl implements ProductService {
             }
         }
     }
+
+    @Override
+    public void addHotByPid(Integer pid) {
+        productDao.addHotByPid(pid);
+    }
 }

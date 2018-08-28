@@ -62,4 +62,6 @@ PageBean<Product> getPageBean(PageBean<Product> pageBean,Integer is_off);
     void updateProductByPid(HttpServletRequest request,MultipartFile pic,Product product);
 
     void addProduct(HttpServletRequest request,MultipartFile image,Product product);
+
+    void addHotByPid(Integer pid);
 }

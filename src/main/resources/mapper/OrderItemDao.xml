@@ -16,4 +16,12 @@
        from orderitem
        where pid=#{pid}
    </select>
+   <update id="delOrderItem" parameterType="Integer">
+       delete from orderitem
+       where itemid=#{itemId}
+   </update>
+    <select id="getOrderItemListByOid" parameterType="Integer" resultType="org.heida.model.OrderItem">
+        select * from orderitem
+        where oid=#{oid};
+    </select>
 </mapper>

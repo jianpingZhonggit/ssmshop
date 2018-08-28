@@ -57,4 +57,6 @@ public interface ProductDao {
     Integer getAllRowCountByPage(PageBean<Product> newPageBean);
 
     List<Product> getAllProductListByPage(PageBean<Product> newPageBean);
+
+    void addHotByPid(Integer pid);
 }

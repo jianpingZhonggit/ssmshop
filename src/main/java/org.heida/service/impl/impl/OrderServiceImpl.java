@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderExt> getOrderList(String state, Integer uid) {
         Order order = new Order();
         order.setUid(uid);
-        if(state==null){
+        if(state==null||"".equals(state)){
             order.setState(null);
         }else{
             order.setState(Integer.valueOf(state));
@@ -100,6 +100,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void changeOrder(Order order) {
+        List<OrderItem> orderItemList = orderItemService.getOrderItemListByOid(order.getOid());
+        for (int i = 0; i < orderItemList.size(); i++) {
+            Integer pid = orderItemList.get(i).getPid();
+            productService.addHotByPid(pid);
+        }
         orderDao.changeOrder(order);
     }
 
@@ -141,5 +146,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void receipt(Integer oid) {
         orderDao.receipt(oid);
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemByOid(Integer oid) {
+        return orderItemService.getOrderItemListByOid(oid);
+    }
+
+    @Override
+    public void delOrderItem(Integer itemId) {
+        orderItemService.delOrderItem(itemId);
     }
 }

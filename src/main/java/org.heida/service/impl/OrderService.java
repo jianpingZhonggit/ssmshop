@@ -34,4 +34,8 @@ public interface OrderService {
     void ship(Integer oid);
 
     void receipt(Integer oid);
+
+    List<OrderItem> getOrderItemByOid(Integer oid);
+
+    void delOrderItem(Integer itemId);
 }

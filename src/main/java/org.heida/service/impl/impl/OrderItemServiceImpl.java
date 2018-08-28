@@ -36,4 +36,14 @@ public class OrderItemServiceImpl implements OrderItemService {
     public Integer getOrderItemCountByPid(Integer pid) {
         return orderItemDao.getOrderItemCountByPid(pid);
     }
+
+    @Override
+    public List<OrderItem> getOrderItemListByOid(Integer oid) {
+        return orderItemDao.getOrderItemListByOid(oid);
+    }
+
+    @Override
+    public void delOrderItem(Integer itemId) {
+        orderItemDao.delOrderItem(itemId);
+    }
 }

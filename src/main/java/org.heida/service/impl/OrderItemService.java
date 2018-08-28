@@ -1,6 +1,7 @@
 package org.heida.service.impl;
 
 import org.heida.model.CartItem;
+import org.heida.model.OrderItem;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,4 +13,8 @@ public interface OrderItemService {
     Integer getOrderItemCountByOid(Integer oid);
 
     Integer getOrderItemCountByPid(Integer pid);
+
+    List<OrderItem> getOrderItemListByOid(Integer oid);
+
+    void delOrderItem(Integer itemId);
 }

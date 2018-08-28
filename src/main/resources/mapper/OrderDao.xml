@@ -155,4 +155,8 @@
         set state=4
         where oid=#{oid}
     </update>
+    <select id="getOrderItemListByOid" parameterType="Integer" resultType="org.heida.model.OrderItem">
+        select * from orderitem
+        where oid=#{oid};
+    </select>
 </mapper>

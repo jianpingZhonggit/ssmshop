@@ -166,23 +166,23 @@
 
                             </a>
                             <c:set var="numbers" value="0"/>
-                            <c:forEach var="orderitem" items="${order.orderItemExts}">
+                            <c:forEach var="orderItem" items="${order.orderItemExts}">
                             <div class="aui-mail-product" style="background-color: #d0d2d0;" >
                                 <a href="javascript:;" class="aui-mail-product-item">
                                     <div class="aui-mail-product-item-hd">
-                                        <img src="${path}/images/${orderitem.product.image}" alt="">
+                                        <img src="${path}/images/${orderItem.product.image}" alt="">
                                     </div>
                                     <div class="aui-mail-product-item-bd">
-                                        <input type="text" name="pid" value="${orderitem.product.pid}" hidden="hidden"/>
-                                        <input type="text" name="count" value="${orderitem.count}" hidden="hidden"/>
+                                        <input type="text" name="pid" value="${orderItem.product.pid}" hidden="hidden"/>
+                                        <input type="text" name="count" value="${orderItem.count}" hidden="hidden"/>
                                         <p style="color: #0C0C0C;font-size: 24px;">
-                                            ${orderitem.product.pname}&nbsp;&nbsp;&nbsp;&nbsp;
-                                            ${orderitem.product.shop_price}&nbsp;X&nbsp;${orderitem.count}
-                                            &nbsp;&nbsp;&nbsp;&nbsp;${orderitem.subtotal}
+                                            ${orderItem.product.pname}&nbsp;&nbsp;&nbsp;&nbsp;
+                                            ${orderItem.product.shop_price}&nbsp;X&nbsp;${orderItem.count}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;${orderItem.subtotal}
                                         </p>
                                     </div>
                                 </a>
-                                <c:set var="numbers" value="${numbers+orderitem.count}"/>
+                                <c:set var="numbers" value="${numbers+orderItem.count}"/>
                             </div>
                             </c:forEach>
                             <c:if test="${order.state>1}">
@@ -262,6 +262,19 @@
                                             display: inline-block;
                                             float: right;
                                             margin-left: 8px;"/>
+                                    <a href="${path}/order/cancel.do?oid=${order.oid}&state=${state}"
+                                             style="
+                                             background: none;
+                                             border: 1px solid #f0250f;
+                                             color: #f0250f;
+                                             font-size: 18px;
+                                             border-radius: 40px;
+                                             display: block;
+                                             padding: 2px 14px;
+                                             display: inline-block;
+                                             float: right;
+                                             margin-left: 8px;">
+                                        取消订单</a>
                                 </div>
                             </c:if>
                             </div>
